@@ -29,14 +29,34 @@ Each item can be switched on or off in the config file. Anything you turn off is
 ### Installation
 
 1. Pick the jar for your Minecraft version (`StateLink-2.2.9-mc<version>.jar`, for example `-mc1.21.4.jar`) and put it into the `mods` folder of every server.
-2. Start the server once. A config file is created at `config/playerdataconnector.json` and the mod stays inactive.
+2. Start the server once. A config file is created at `config/statelink.json` and the mod stays inactive.
 3. Stop the server and fill in the database `host`, `name`, `username` and `password`.
 4. Give each server its own `serverId` (for example `s1`, `s2`).
 5. Start all servers. Players are now synchronized.
 
+### Upgrading from PlayerDataConnector
+
+StateLink is the new name of PlayerDataConnector. To upgrade a server:
+
+1. Stop the server.
+2. Remove the `PlayerDataConnector` jar from the `mods` folder and put the `StateLink` jar in. The two must not be installed together; the server refuses to start if both are present.
+3. Start the server.
+
+On that first start StateLink finds the old files and takes them over by itself:
+
+- `config/playerdataconnector.json` is renamed to `config/statelink.json`. Its contents are not changed.
+- Your database is used as it is. StateLink connects to the same database and tables, and nothing in the database is renamed or converted.
+- No file is deleted or overwritten. If both an old and a new config file exist with different settings, the server stops and asks you to keep one, instead of guessing.
+
+You can upgrade your servers one at a time. Servers still running PlayerDataConnector 2.2.9 and servers already running StateLink work together on the same database.
+
+This applies to PlayerDataConnector 2.2.9. If your servers still run an older version such as 2.1.11, stop all of them and also follow the "Upgrading from 2.1.11" note below.
+
+The console command is now `/statelink`. The old `/pdc` still works.
+
 ### Configuration
 
-The config file is `config/playerdataconnector.json`. Restart the server after changing it. A typical example:
+The config file is `config/statelink.json`. Restart the server after changing it. A typical example:
 
 ```json
 {
@@ -162,14 +182,34 @@ StateLink は、Minecraft 用(対応バージョンは下記)の **サーバー�
 ### 導入方法
 
 1. すべてのサーバーの `mods` フォルダに、お使いの Minecraft バージョン用の jar(`StateLink-2.2.9-mc<バージョン>.jar`、例:`-mc1.21.4.jar`)を入れます。
-2. サーバーを一度起動します。`config/playerdataconnector.json` が作成され、この時点では Mod は動作しません。
+2. サーバーを一度起動します。`config/statelink.json` が作成され、この時点では Mod は動作しません。
 3. サーバーを停止し、データベースの `host`・`name`・`username`・`password` を入力します。
 4. サーバーごとに別の `serverId`(例: `s1`、`s2`)を設定します。
 5. すべてのサーバーを起動すると、同期が始まります。
 
+### PlayerDataConnector からの移行
+
+StateLink は PlayerDataConnector の新しい名前です。移行の手順は次のとおりです。
+
+1. サーバーを停止します。
+2. `mods` フォルダから `PlayerDataConnector` の jar を取り除き、`StateLink` の jar を入れます。両方を同時に入れることはできません。両方ある場合、サーバーは起動しません。
+3. サーバーを起動します。
+
+最初の起動時に、StateLink が古いファイルを見つけて自動で引き継ぎます。
+
+- `config/playerdataconnector.json` は `config/statelink.json` に名前が変わります。内容は変更されません。
+- データベースはそのまま使われます。同じデータベース・同じテーブルに接続し、データベース内の名前変更や変換は行いません。
+- ファイルの削除や上書きは行いません。古い設定ファイルと新しい設定ファイルの両方があり、内容が異なる場合は、どちらかを推測して使うことはせず、サーバーを止めて確認を求めます。
+
+サーバーは1台ずつ移行できます。PlayerDataConnector 2.2.9 のままのサーバーと、StateLink に移行済みのサーバーは、同じデータベースで一緒に動作します。
+
+これは PlayerDataConnector 2.2.9 からの移行の場合です。2.1.11 などそれより古いバージョンから移行する場合は、すべてのサーバーを停止したうえで、下の「2.1.11 からの更新」にも従ってください。
+
+コンソールコマンドは `/statelink` になりました。以前の `/pdc` も引き続き使えます。
+
 ### 設定
 
-設定ファイルは `config/playerdataconnector.json` です。変更後はサーバーを再起動してください。設定例:
+設定ファイルは `config/statelink.json` です。変更後はサーバーを再起動してください。設定例:
 
 ```json
 {

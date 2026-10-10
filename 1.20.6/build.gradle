@@ -1,0 +1,59 @@
+plugins {
+    id 'fabric-loom' version '1.14.10'
+    id 'maven-publish'
+}
+
+group = 'com.atsukigames'
+base { archivesName = 'StateLink' }
+version = project.hasProperty('mod_version') ? project.mod_version : '2.2.9'
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:1.20.6"
+    mappings "net.fabricmc:yarn:1.20.6+build.3:v2"
+
+    modImplementation "net.fabricmc:fabric-loader:0.17.3"
+    // Fabric Loader bundles MixinExtras; compile against the same API without embedding a second copy.
+    compileOnly "io.github.llamalad7:mixinextras-fabric:0.5.0"
+
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.100.8+1.20.6"
+
+    // Runtime libraries nested into the final jar
+    implementation "com.zaxxer:HikariCP:5.0.1"
+    implementation "com.mysql:mysql-connector-j:8.0.33"
+    implementation "org.slf4j:slf4j-api:1.7.36"
+
+    include "com.zaxxer:HikariCP:5.0.1"
+    include "com.mysql:mysql-connector-j:8.0.33"
+    include "org.slf4j:slf4j-api:1.7.36"
+
+    testImplementation "org.junit.jupiter:junit-jupiter:5.11.4"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+remapJar {
+    archiveClassifier = 'mc1.20.6'
+}
+
+processResources {
+    inputs.property "version", project.version
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 21
+    options.encoding = 'UTF-8'
+}
+
+tasks.test {
+    useJUnitPlatform()
+}

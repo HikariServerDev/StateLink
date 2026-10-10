@@ -1,0 +1,80 @@
+plugins {
+    id 'fabric-loom' version '1.2.8'
+    id 'maven-publish'
+}
+
+group = 'com.atsukigames'
+archivesBaseName = 'StateLink'
+version = project.hasProperty('mod_version') ? project.mod_version : '2.2.9'
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // 必須: Minecraft 本体
+    minecraft "com.mojang:minecraft:1.18.2"
+
+    // 必須: Yarn マッピング（production s1/s2と同じ1.18.2 build.4）
+    mappings "net.fabricmc:yarn:1.18.2+build.4:v2"
+
+    // 必須: Fabric Loader
+    modImplementation "net.fabricmc:fabric-loader:0.17.3"
+    // Fabric Loader 0.17.3 bundles MixinExtras 0.5.0; compile against the
+    // same API without embedding a second copy in the production mod jar.
+    compileOnly "io.github.llamalad7:mixinextras-fabric:0.5.0"
+
+    // 必須: Fabric API（production s1/s2と同じ1.18.2版）
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.77.0+1.18.2"
+
+    // 外部ライブラリ（実行時に必要な非Mod依存）
+    implementation "com.zaxxer:HikariCP:5.0.1"
+    implementation "com.mysql:mysql-connector-j:8.0.33"
+    implementation "org.slf4j:slf4j-api:1.7.36"
+
+    // Jar-in-Jar 同梱（最終JARにネスト）
+    include "com.zaxxer:HikariCP:5.0.1"
+    include "com.mysql:mysql-connector-j:8.0.33"
+    include "org.slf4j:slf4j-api:1.7.36"
+
+    testImplementation "org.junit.jupiter:junit-jupiter:5.11.4"
+}
+
+remapJar {
+    archiveClassifier = 'mc1.18.2'
+}
+
+processResources {
+    inputs.property "version", project.version
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
+    options.encoding = 'UTF-8'
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+loom {
+    runs {
+        server {
+            server()
+            setConfigName("StateLink Server")
+        }
+    }
+}
+
+// Rehearsal on an isolated copy of the production tables; never part of test/build and never run against a live database.
+tasks.register('productionCopyRehearsal', JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'com.atsukigames.statelink.rehearsal.ProductionCopyRehearsal'
+}

@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.atsukigames.statelink.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "server": [
+    "StatisticsDirtyMixin",
+    "AdvancementsDirtyMixin",
+    "RecipeBookDirtyMixin",
+    "AdvancementTrackerAccess",
+    "CriterionProgressAccess",
+    "StatHandlerAccess",
+    "ServerStatHandlerAccess",
+    "HungerManagerAccessor",
+    "LivingEntityAccessor",
+    "PlayerEntityProfileAccessor",
+    "DisconnectOnServerThreadMixin",
+    "LoadingQuarantineNetworkMixin",
+    "LoadingQuarantinePickupMixin",
+    "LoadingQuarantineMovementMixin",
+    "LoadingQuarantineServerPlayerMixin"
+  ]
+}

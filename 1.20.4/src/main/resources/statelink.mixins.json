@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.atsukigames.statelink.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "server": [
+    "VanillaLoginWorldRestoreMixin",
+    "StatisticsDirtyMixin",
+    "AdvancementsDirtyMixin",
+    "RecipeBookDirtyMixin",
+    "AdvancementTrackerAccess",
+    "CriterionProgressAccess",
+    "StatHandlerAccess",
+    "ServerStatHandlerAccess",
+    "DisconnectOnServerThreadMixin",
+    "LoadingQuarantineNetworkMixin",
+    "LoadingQuarantinePickupMixin",
+    "LoadingQuarantineMovementMixin",
+    "LoadingQuarantineServerPlayerMixin"
+  ]
+}
