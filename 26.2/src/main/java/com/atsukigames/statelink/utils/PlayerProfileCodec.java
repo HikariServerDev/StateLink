@@ -89,17 +89,10 @@ public final class PlayerProfileCodec {
             return false;
         }
     }
-    public static PropertyMap prepare(ServerPlayer player, String json, String displayName) {
+    public static PropertyMap prepare(ServerPlayer player, String json) {
         onServerThread(player);
-        if (isLegacyIdentityPlaceholder(json)) {
-            // The legacy display_name column is the old player name as well; only the UUID is checked.
-            PropertyMap legacy = decode(json, player.getUUID(), player.getGameProfile().name());
-            StateLink.LOGGER.warn("Legacy identity-only profile: preserving local properties until real checkpoint");
-            return legacy;
-        }
-        if (!player.getDisplayName().getString().equals(displayName)) {
-            throw new IllegalArgumentException("Profile display/team name mismatch; global scoreboard rename is unsupported");
-        }
+        // Team prefixes/suffixes are backend-local presentation, not login identity.
+        // Keep UUID, account-name and full property validation in decode().
         PropertyMap result = decode(json, player.getUUID(), player.getGameProfile().name());
         if (result == null) StateLink.LOGGER.warn("Legacy identity-only profile: preserving local properties until real checkpoint");
         return result;

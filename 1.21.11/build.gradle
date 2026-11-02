@@ -5,7 +5,7 @@ plugins {
 
 group = 'com.atsukigames'
 base { archivesName = 'StateLink' }
-version = project.hasProperty('mod_version') ? project.mod_version : '2.4.0'
+version = project.hasProperty('mod_version') ? project.mod_version : '2.4.1'
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)

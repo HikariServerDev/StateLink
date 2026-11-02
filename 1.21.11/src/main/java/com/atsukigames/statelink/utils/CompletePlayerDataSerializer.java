@@ -512,7 +512,7 @@ public final class CompletePlayerDataSerializer {
         );
         if (sync.advancements) prepared.advancements = PlayerProgressCodec.prepareAdvancements(player, data.advancementsJson);
         if (sync.statistics) prepared.statistics = PlayerProgressCodec.prepareStatistics(player, data.statisticsJson);
-        if (sync.playerProfile) prepared.profile = PlayerProfileCodec.prepare(player, data.skinTexture, data.displayName);
+        if (sync.playerProfile) prepared.profile = PlayerProfileCodec.prepare(player, data.skinTexture);
         if (sync.recipeBook) prepared.recipes = PlayerRecipeCodec.prepare(player, data.recipeBookJson);
         return prepared;
     }
@@ -525,7 +525,7 @@ public final class CompletePlayerDataSerializer {
         var statisticBackup = prepared.statistics == null ? null
             : PlayerProgressCodec.prepareStatistics(player, PlayerProgressCodec.statistics(player));
         var profileBackup = prepared.profile == null ? null
-            : PlayerProfileCodec.prepare(player, PlayerProfileCodec.capture(player), player.getDisplayName().getString());
+            : PlayerProfileCodec.prepare(player, PlayerProfileCodec.capture(player));
         var recipeBackup = prepared.recipes == null ? null
             : PlayerRecipeCodec.prepare(player, PlayerRecipeCodec.capture(player));
         try {

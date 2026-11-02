@@ -2,6 +2,10 @@
 
 **Minecraft 1.18 – 1.21.11, 26.1 – 26.3 / Fabric** — by AtsukiMC
 
+**2.4.1 login fix:** scoreboard/team prefixes and suffixes are local presentation, not profile identity. A different stored display label no longer rejects a login. UUID, account-name and profile-property validation remain enforced; no scoreboard or login identity is renamed.
+
+**2.4.1のログイン修正:** チームのprefix/suffixなどの表示名はサーバーごとの装飾として扱い、保存時と異なっていても接続を拒否しません。UUID・アカウント名・プロフィール内容の検証は維持します。ログインIDやscoreboardは変更しません。
+
 **2.4.0 recovery default:** `last_checkpoint`, enabled, with a 5-second delay and `acknowledgeUnsafeRecovery=true`. This automatically adopts the last committed DB checkpoint without a per-player command or freshness requirement. Progress may roll back and externalized World/container items may be duplicated or lost. It is **not safe/exactly-once recovery**. Explicit existing modes and acknowledgement values are preserved, not rewritten. Choose `safe`/`manual` if you do not accept this trade-off. Live-owner, fencing and domain-provenance protections remain; missing player data is not invented.
 
 **2.4.0のrecovery初期値:** `last_checkpoint`・有効・待機5秒・`acknowledgeUnsafeRecovery=true`。プレイヤーごとのコマンドや鮮度条件なしで最後のDB保存を自動採用します。進行の巻戻りや、World/containerとの不一致によるアイテム重複・消失が起こり得るため、安全なexactly-once復旧ではありません。既存configの明示的なmode/承諾値は書き換えません。リスクを避ける場合は`safe`/`manual`を明示してください。live owner・fencing・domain provenanceの保護は維持します。
@@ -34,7 +38,7 @@ Each item can be switched on or off in the config file. Anything you turn off is
 
 ### Installation
 
-1. Pick the jar for your Minecraft version (`StateLink-2.4.0-mc<version>.jar`, for example `-mc1.21.4.jar`) and put it into the `mods` folder of every server.
+1. Pick the jar for your Minecraft version (`StateLink-2.4.1-mc<version>.jar`, for example `-mc1.21.4.jar`) and put it into the `mods` folder of every server.
 2. Start the server once. A config file is created at `config/statelink.json` and the mod stays inactive.
 3. Stop the server and fill in the database `host`, `name`, `username` and `password`.
 4. Give each server its own `serverId` (for example `s1`, `s2`).
@@ -145,7 +149,7 @@ The server rejects timing combinations that cannot fit a bounded renewal attempt
 | `syncOnDimensionChange` | `true` | Triggers a synchronization operation on dimension change; it does not enable the `dimension` data domain. |
 | `gamemode` | Game mode and flying state. |
 | `advancements`, `statistics`, `recipeBook` | Advancements, statistics and the recipe book. |
-| `playerProfile` | Skin and profile information. |
+| `playerProfile` | Skin and profile properties. Login UUID/name remain validated; backend-local team/display labels are not applied or compared. |
 
 Use the **same** values on every server.
 
@@ -216,7 +220,7 @@ StateLink は、Minecraft 用(対応バージョンは下記)の **サーバー�
 
 ### 導入方法
 
-1. すべてのサーバーの `mods` フォルダに、お使いの Minecraft バージョン用の jar(`StateLink-2.4.0-mc<バージョン>.jar`、例:`-mc1.21.4.jar`)を入れます。
+1. すべてのサーバーの `mods` フォルダに、お使いの Minecraft バージョン用の jar(`StateLink-2.4.1-mc<バージョン>.jar`、例:`-mc1.21.4.jar`)を入れます。
 2. サーバーを一度起動します。`config/statelink.json` が作成され、この時点では Mod は動作しません。
 3. サーバーを停止し、データベースの `host`・`name`・`username`・`password` を入力します。
 4. サーバーごとに別の `serverId`(例: `s1`、`s2`)を設定します。
@@ -327,7 +331,7 @@ serverは、boundedなlease更新と新規接続によるownership再確認がle
 | `syncOnDimensionChange` | `true` | dimension変更時に同期処理を開始します。`dimension` domain自体を有効にする設定ではありません。 |
 | `gamemode` | ゲームモードと飛行状態。 |
 | `advancements`、`statistics`、`recipeBook` | 進捗、統計、レシピブック。 |
-| `playerProfile` | スキンなどのプロフィール情報。 |
+| `playerProfile` | スキンなどのプロフィールproperties。UUID・アカウント名を検証し、サーバーごとのチーム装飾・表示名は適用や一致判定の対象にしません。 |
 
 すべてのサーバーで**同じ値**にしてください。
 
