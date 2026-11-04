@@ -63,8 +63,8 @@ if (target.minecraft == inventory.regression_baseline) {
         integrationTest {
             java.srcDir new File(statelinkRoot, 'tests/integration/java')
             resources.srcDir new File(statelinkRoot, 'src/test/resources')
-            compileClasspath += sourceSets.main.output + sourceSets.test.output
-            runtimeClasspath += sourceSets.main.output + sourceSets.test.output
+            compileClasspath = sourceSets.test.compileClasspath + sourceSets.main.output + sourceSets.test.output
+            runtimeClasspath = output + sourceSets.test.runtimeClasspath
         }
         rehearsal {
             java.srcDir new File(statelinkRoot, 'tools/rehearsal/java')
@@ -73,8 +73,6 @@ if (target.minecraft == inventory.regression_baseline) {
         }
     }
     configurations {
-        integrationTestImplementation.extendsFrom testImplementation
-        integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
         rehearsalImplementation.extendsFrom implementation
         rehearsalRuntimeOnly.extendsFrom runtimeOnly
     }
