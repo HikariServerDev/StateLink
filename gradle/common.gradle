@@ -1,8 +1,8 @@
 import groovy.json.JsonSlurper
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
 
-// Shared packaging/test policy only. Each project keeps its Minecraft API, mappings and Loom.
-def repositoryRoot = projectDir.parentFile
+// Shared packaging/test policy. API variants and toolchains are selected without changing runtime code.
+def repositoryRoot = statelinkRoot
 def baseline = new JsonSlurper().parse(file("${repositoryRoot}/minecraft-versions.json")).regression_baseline
 def releaseProperties = new Properties()
 file("${repositoryRoot}/version.properties").withInputStream { releaseProperties.load(it) }
@@ -21,13 +21,9 @@ tasks.named('jar') {
     from("${repositoryRoot}/licenses") { into 'META-INF/licenses' }
 }
 
-// The 29 API ports have one common, API-independent configuration suite.
-// Their historical copied 1.18.2 tests were never a qualified cross-version suite.
-if (projectDir.name != baseline) {
-    sourceSets.test.java.setSrcDirs(["${repositoryRoot}/tests/shared/java"])
-}
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
+    workingDir = new File(repositoryRoot, 'tests')
     maxHeapSize = '512m'
     maxParallelForks = 1
     jvmArgs '-XX:ActiveProcessorCount=2'
@@ -38,9 +34,10 @@ tasks.named('test') {
 if (projectDir.name == baseline) {
     tasks.register('mysqlTest', Test) {
         description = 'Explicit real-MySQL regression suite; requires a disposable loopback test database.'
-        testClassesDirs = sourceSets.test.output.classesDirs
-        classpath = sourceSets.test.runtimeClasspath
+        testClassesDirs = sourceSets.integrationTest.output.classesDirs
+        classpath = sourceSets.integrationTest.runtimeClasspath
         include '**/*MySqlIntegrationTest.class'
+        dependsOn tasks.named('integrationTestClasses')
         mustRunAfter tasks.named('test')
         doFirst {
             def host = System.getenv('STATELINK_TEST_MYSQL_HOST')

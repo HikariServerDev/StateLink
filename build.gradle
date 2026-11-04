@@ -1,0 +1,89 @@
+import groovy.json.JsonSlurper
+
+// Applied after the selected target's generated plugin bootstrap. No runtime API is unified here.
+def inventory = new JsonSlurper().parse(new File(statelinkRoot, 'minecraft-versions.json'))
+def target = inventory.targets.find { it.minecraft == statelinkMinecraft }
+def release = new Properties()
+new File(statelinkRoot, 'version.properties').withInputStream { release.load(it) }
+group = 'com.atsukigames'
+version = release.getProperty('mod_version')
+if (target.minecraft == inventory.regression_baseline) archivesBaseName = 'StateLink'
+else base { archivesName = 'StateLink' }
+buildDir = new File(statelinkRoot, "build/targets/${target.minecraft}")
+java { toolchain.languageVersion = JavaLanguageVersion.of(target.java as int) }
+repositories { mavenCentral() }
+
+dependencies {
+    minecraft "com.mojang:minecraft:${target.minecraft}"
+    if (target.mappings != 'mojang-official') mappings "net.fabricmc:yarn:${target.mappings}:v2"
+    if (target.mappings == 'mojang-official') {
+        implementation "net.fabricmc:fabric-loader:${target.loader}"
+        implementation "net.fabricmc.fabric-api:fabric-api:${target.fabric_api}"
+    } else {
+        modImplementation "net.fabricmc:fabric-loader:${target.loader}"
+        modImplementation "net.fabricmc.fabric-api:fabric-api:${target.fabric_api}"
+    }
+    compileOnly 'io.github.llamalad7:mixinextras-fabric:0.5.0'
+    ['com.zaxxer:HikariCP:5.0.1', 'com.mysql:mysql-connector-j:8.0.33', 'org.slf4j:slf4j-api:1.7.36'].each { coordinate ->
+        implementation coordinate
+        include coordinate
+    }
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    if (target.minecraft == inventory.regression_baseline) testImplementation 'org.ow2.asm:asm:9.8'
+    if (target.minecraft != inventory.regression_baseline) testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+def selection = new JsonSlurper().parse(new File(statelinkRoot, 'source-layout.json'))
+def mixins = selection.mixins.findAll { target.minecraft in it.targets }
+if (mixins.size() != 1) throw new GradleException('Ambiguous Mixin configuration')
+sourceSets {
+    main {
+        java.setSrcDirs([new File(statelinkRoot, 'src/main/java'), new File(projectDir, 'sources/java')])
+        resources.setSrcDirs([new File(statelinkRoot, 'src/main/resources'), new File(statelinkRoot, mixins[0].source).parentFile])
+    }
+    test {
+        java.setSrcDirs([new File(statelinkRoot, target.minecraft == inventory.regression_baseline ? 'src/test/java' : 'src/test/compat/ports/java')])
+        resources.setSrcDirs([new File(statelinkRoot, 'src/test/resources')])
+    }
+}
+if (target.mappings == 'mojang-official') jar { archiveClassifier = "mc${target.minecraft}" }
+else remapJar { archiveClassifier = "mc${target.minecraft}" }
+processResources {
+    def values = [version: project.version] + target.metadata
+    values.each { key, value -> inputs.property key, value }
+    filesMatching('fabric.mod.json') { expand values }
+}
+tasks.withType(JavaCompile).configureEach {
+    options.release = target.java as int
+    options.encoding = 'UTF-8'
+}
+if (target.minecraft == inventory.regression_baseline) {
+    loom { runs { server { server(); setConfigName('StateLink Server') } } }
+    sourceSets {
+        integrationTest {
+            java.srcDir new File(statelinkRoot, 'tests/integration/java')
+            resources.srcDir new File(statelinkRoot, 'src/test/resources')
+            compileClasspath += sourceSets.main.output + sourceSets.test.output
+            runtimeClasspath += sourceSets.main.output + sourceSets.test.output
+        }
+        rehearsal {
+            java.srcDir new File(statelinkRoot, 'tools/rehearsal/java')
+            compileClasspath += sourceSets.main.output
+            runtimeClasspath += sourceSets.main.output
+        }
+    }
+    configurations {
+        integrationTestImplementation.extendsFrom testImplementation
+        integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+        rehearsalImplementation.extendsFrom implementation
+        rehearsalRuntimeOnly.extendsFrom runtimeOnly
+    }
+    tasks.register('productionCopyRehearsal', JavaExec) {
+        classpath = sourceSets.rehearsal.runtimeClasspath
+        mainClass = 'com.atsukigames.statelink.rehearsal.ProductionCopyRehearsal'
+    }
+}
+tasks.register('prepareSources') {
+    description = 'Prepare the selected compatibility source projection (also performed during settings import).'
+}
+apply from: new File(statelinkRoot, 'gradle/common.gradle')

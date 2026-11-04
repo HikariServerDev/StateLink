@@ -11,6 +11,7 @@ import subprocess
 import zipfile
 from pathlib import Path, PurePosixPath
 
+from source_layout import java_sources, mixin_source, metadata_text
 from project import ROOT
 
 MAX_JAR_BYTES = 32 * 1024 * 1024
@@ -108,7 +109,7 @@ def inspect_jar(path: Path, target: dict, version: str, root: Path = ROOT) -> di
             if any(metadata.get(key) != value for key, value in expected.items()):
                 raise ArtifactError("Mod identity/version/license mismatch")
             dependencies = metadata["depends"]
-            source_metadata = json.loads((root / target["minecraft"] / "src/main/resources/fabric.mod.json").read_text())
+            source_metadata = json.loads(metadata_text(root, target, version))
             if dependencies["minecraft"].removeprefix("~") != target["minecraft"]:
                 raise ArtifactError("wrong Minecraft target")
             if dependencies["java"] != f">={target['java']}" or dependencies["fabricloader"] != f">={target['loader']}":
@@ -120,7 +121,7 @@ def inspect_jar(path: Path, target: dict, version: str, root: Path = ROOT) -> di
             if metadata["mixins"] != ["statelink.mixins.json"]:
                 raise ArtifactError("unexpected Mixin configuration list")
             mixins = json.loads(archive.read("statelink.mixins.json"))
-            source_mixins = json.loads((root / target["minecraft"] / "src/main/resources/statelink.mixins.json").read_text())
+            source_mixins = json.loads(mixin_source(root, target["minecraft"]).read_text())
             if {k: v for k, v in mixins.items() if k != "refmap"} != {k: v for k, v in source_mixins.items() if k != "refmap"}:
                 raise ArtifactError("packaged/source Mixin configuration mismatch")
             if mixins.get("required") is not True or mixins.get("compatibilityLevel") != f"JAVA_{target['java']}":
@@ -161,11 +162,12 @@ def inspect_jar(path: Path, target: dict, version: str, root: Path = ROOT) -> di
                         raise ArtifactError("MySQL vendor license missing")
             major = target["java"] + 44
             own_classes = [name for name in names if name.startswith(OWN_PACKAGE) and name.endswith(".class")]
+            production_sources = java_sources(root, target["minecraft"])
             if OWN_PACKAGE + "StateLink.class" not in own_classes:
                 raise ArtifactError("missing main class")
             for name in own_classes:
                 outer = name.split("$")[0].removesuffix(".class") + ".java"
-                if not (root / target["minecraft"] / "src/main/java" / outer).is_file():
+                if outer not in production_sources:
                     raise ArtifactError(f"class has no production source: {name}")
                 header = archive.read(name)[:8]
                 if len(header) != 8 or header[:4] != b"\xca\xfe\xba\xbe" or int.from_bytes(header[6:8], "big") != major:

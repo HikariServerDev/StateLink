@@ -7,6 +7,7 @@ import json
 import re
 import subprocess
 import zipfile
+from source_layout import check_sources, java_sources, metadata_text, mixin_source
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,46 +49,45 @@ def load_project(root: Path = ROOT) -> tuple[str, list[dict]]:
             raise ValueError("invalid Minecraft target name")
         if target["java"] not in (17, 21, 25) or not isinstance(target["refmap"], bool):
             raise ValueError("invalid Java/mapping contract")
+        for key in ('gradle', 'loader', 'loom'):
+            if not re.fullmatch(r'[0-9]+\.[0-9]+(?:\.[0-9]+)?(?:-SNAPSHOT)?', target[key]):
+                raise ValueError('invalid toolchain version')
+        if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+\+[0-9.]+', target['fabric_api']):
+            raise ValueError('invalid Fabric API coordinate')
+        if target['mappings'] != 'mojang-official' and not re.fullmatch(r'[0-9.]+\+build\.[0-9]+', target['mappings']):
+            raise ValueError('invalid mappings coordinate')
         target["primary"] = target["minecraft"] == inventory["regression_baseline"]
     return values[0], targets
 
 
 def check_layout(root: Path = ROOT) -> None:
-    check_legacy_fixtures(root / "tests/fixtures/legacy")
+    check_legacy_fixtures(root / 'tests/fixtures/legacy')
     version, targets = load_project(root)
-    expected = {target["minecraft"] for target in targets}
-    actual = {p.name for p in root.iterdir() if p.is_dir() and (p / "build.gradle").is_file()}
-    if actual != expected:
-        raise ValueError(f"project set mismatch: missing={expected-actual}, extra={actual-expected}")
+    check_sources(root, targets)
+    if any((root / t['minecraft'] / 'src').exists() for t in targets):
+        raise ValueError('maintained per-version source trees must not coexist with shared sources')
+    properties = dict(line.split('=', 1) for line in (root / 'gradle.properties').read_text().splitlines()
+                      if '=' in line and not line.startswith('#'))
+    baseline = next(t['minecraft'] for t in targets if t['primary'])
+    if properties.get('minecraft_version') != baseline:
+        raise ValueError('IDE/default target differs from the regression baseline')
+    for path in ('settings.gradle', 'build.gradle', 'gradlew', 'gradlew.bat', 'gradle/common.gradle'):
+        if not (root / path).is_file() or (root / path).is_symlink():
+            raise ValueError('missing shared build entrypoint')
+    wrapper_jar = root / 'gradle/wrapper/gradle-wrapper.jar'
+    recorded = json.loads((root / 'gradle/wrapper/checksums.json').read_text())['wrapper_sha256']
+    if hashlib.sha256(wrapper_jar.read_bytes()).hexdigest() != recorded:
+        raise ValueError('Gradle wrapper bytecode checksum mismatch')
     for target in targets:
-        directory = root / target["minecraft"]
-        if directory.is_symlink():
-            raise ValueError(f"project symlink is not supported: {directory.name}")
-        gradle = (directory / "build.gradle").read_text()
-        properties = (directory / "gradle.properties").read_text().splitlines()
-        entry = (directory / "src/main/java/com/atsukigames/statelink/StateLink.java").read_text()
-        wrapper = (directory / "gradle/wrapper/gradle-wrapper.properties").read_text()
-        metadata = json.loads((directory / "src/main/resources/fabric.mod.json").read_text())
-        contracts = [
-            f"mod_version={version}" in properties,
-            f'VERSION = "{version}"' in entry,
-            f"'{version}'" in gradle,
-            f"JavaLanguageVersion.of({target['java']})" in gradle,
-            f"com.mojang:minecraft:{target['minecraft']}" in gradle,
-            f"net.fabricmc:fabric-loader:{target['loader']}" in gradle,
-            f"fabric-api:{target['fabric_api']}" in gradle,
-            f"version '{target['loom']}'" in gradle,
-            f"gradle-{target['gradle']}-bin.zip" in wrapper,
-            "distributionSha256Sum=" in wrapper,
-            metadata["depends"]["minecraft"].removeprefix("~") == target["minecraft"],
-            metadata["depends"]["java"] == f">={target['java']}",
-            metadata["license"] == "LGPL-3.0-only",
-            "apply from: '../gradle/common.gradle'" in gradle,
-        ]
-        if target["mappings"] != "mojang-official":
-            contracts.append(f"net.fabricmc:yarn:{target['mappings']}:v2" in gradle)
-        if not all(contracts):
-            raise ValueError(f"source/build/manifest contract mismatch: {target['minecraft']}")
+        entry = java_sources(root, target['minecraft'])['com/atsukigames/statelink/StateLink.java'].read_text()
+        metadata = json.loads(metadata_text(root, target, version))
+        wrapper = (root / f"gradle/wrapper/gradle-{target['gradle']}.properties").read_text()
+        if f'VERSION = "{version}"' not in entry or metadata.get('license') != 'LGPL-3.0-only':
+            raise ValueError('source version/license mismatch')
+        if f"gradle-{target['gradle']}-bin.zip" not in wrapper or not re.search(r'^distributionSha256Sum=[a-f0-9]{64}$', wrapper, re.M):
+            raise ValueError('Gradle distribution/checksum mismatch')
+        if not set(target.get('wrapper_options', {})) <= {'networkTimeout', 'validateDistributionUrl'}:
+            raise ValueError('unsupported wrapper override')
 
 
 def provenance(root: Path = ROOT) -> dict:

@@ -5,30 +5,28 @@
 ### Repository roles
 
 ```text
-minecraft-versions.json   exact supported targets, toolchains and regression baseline
-version.properties        current Mod version (checked against every project)
-<minecraft>/              independent Gradle/Loom build and API-specific src/main
-1.18.2/src/test/           primary unit, JDBC, migration and concurrency tests
-tests/shared/java/        API-independent configuration suite used by the other ports
-tests/tools/              archive, qualification and publication rejection tests
-tests/fixtures/legacy/    three immutable historical JAR inputs for real migration tests
-gradle/common.gradle      shared packaging and test policy; no Minecraft API unification
-tools/                    the same build/verify/publish entrypoints used in CI
-.github/workflows/        verification and separate manual publication
-build/                    optional local distribution; ignored by Git
-.verification/            generated local test results; ignored by Git
-staging-results/          historical evidence/archives; local only, ignored by Git
+src/main/                 code/resources shared by every target
+src/compat/               only distinct class/Mixin implementations
+src/test/                 primary unit and port configuration suites
+tests/integration/        explicitly invoked real-MySQL tests
+tests/fixtures/           immutable legacy inputs and migration source hashes
+source-layout.json        exact per-class selection for every target
+minecraft-versions.json   all 30 dependencies/toolchains and baseline
+build.gradle              shared target configuration
+settings.gradle           root entrypoint and isolated project model
+gradle/wrapper/           shared wrapper JAR and three preserved distributions
+tools/                    common local/CI build, verify and publish entrypoints
+build/targets/            generated per-target outputs
+.gradle/statelink/        generated source projections/project caches
+staging-results/          local-only evidence and pre-migration archives
 ```
 
-There are 30 separate Minecraft projects, not a Stonecutter project. The regression baseline is
-1.18.2; the newest supported target is 26.3. `minecraft-versions.json` drives CI and strict target-set
-validation. Adding a version requires a reviewed API/mapping/Mixin port and a matching inventory entry;
-copying another version's source or renaming a JAR does not establish support.
-
-Open the intended Minecraft folder as a Gradle project in the IDE. Its own wrapper, Java toolchain,
-Loom and mappings remain authoritative. This maintenance does not claim an actual IDE-completion
-test or full cross-version runtime/feature parity. Stonecutter migration is intentionally deferred:
-the old Yarn/refmap, modern inline-remapping and 26.x official-name contracts must not be merged blindly.
+Sources are centralized. See [SOURCE-ARCHITECTURE.md](SOURCE-ARCHITECTURE.md) for the class selection,
+Stonecutter assessment, retained behavioral differences and exact migration equivalence gates.
+The IDE/default/VCS regression baseline is 1.18.2; open the repository root and first run
+`./gradlew prepareSources`. Use `-Pminecraft_version=<target>` to select another target. The selected
+JDK/Gradle/Loom are preserved; no global mutable active-version file is used. Actual IDE completion
+and full runtime/feature parity are not implied by CLI success.
 
 ### Local checks
 
@@ -38,6 +36,7 @@ and `JAVA_25_HOME` when they cannot be found automatically. No Java/Gradle depen
 ```sh
 python3 tools/project.py check
 python3 -m unittest discover -s tests/tools -v
+./gradlew -Pminecraft_version=1.18.2 test build
 python3 tools/build.py --minecraft 1.18.2 --output .verification/primary
 python3 tools/build.py --output .verification/all-ports
 ```
@@ -73,7 +72,7 @@ The primary source tests include a **schema-only**, data-free 2.1.11 migration f
 Three exact historical JARs in `tests/fixtures/legacy` are immutable test **inputs**, not generated
 build outputs or supported downloads. Their SHA-256/version/CRC are checked; they are never rebuilt,
 relabeled, packaged in StateLink, or uploaded as release assets. They preserve old metadata and licenses. The explicit
-`productionCopyRehearsal` helper is not executed by normal tests, CI or release publication.
+`productionCopyRehearsal` helper in `tools/rehearsal/java` is not executed by normal tests, CI or release publication.
 
 ### Distribution and GitHub Actions
 
@@ -125,13 +124,13 @@ is not fabricated. LGPL-3.0-only applies to StateLink; separately bundled librar
 
 ### 構成と対応版
 
-版別の`src/main`・Loom・Gradle・Java・マッピングは独立させています。共通化したのは、ビルド／検査／配布手順とAPI非依存の設定テストです。回帰試験の基準は1.18.2、最新対応版は26.3です。対応版を増やす場合は、対象API・bytecode・Mixin契約を確認し、実装と`minecraft-versions.json`を同時に更新してください。
+ソースは`src/main`と必要なクラスだけの`src/compat`へ集約しました。Loom・Gradle・Java・マッピングと実装の選択は版ごとに維持します。回帰試験の基準は1.18.2、最新対応版は26.3です。対応版を増やす場合は、対象API・bytecode・Mixin契約を確認し、実装と`minecraft-versions.json`を同時に更新してください。
 
-IDEでは対象Minecraft版のフォルダをGradleプロジェクトとして開きます。今回、実際のIDE補完や全版のMinecraft動作確認を実施したという意味ではありません。API差を無視したStonecutter移行は行いません。
+IDEではルートをGradleプロジェクトとして開き、`minecraft_version`で対象版を選びます。今回、実際のIDE補完や全版のMinecraft動作確認を実施したという意味ではありません。API差を無視したStonecutter移行は行いません。
 
 `tests/fixtures/legacy`の過去版3 JARは移行試験に不可欠な固定入力です。現在のビルド出力とは区別し、元のハッシュ・版情報・ライセンスを変更せず保存します。Mod本体／Releaseには含めず、配布用にも使いません。
 
-`1.18.2/src/test`は既存の単体・JDBC・migration試験、`tests/shared/java`は他29版共通の設定テスト、`tests/tools`はビルド・成果物・公開処理の異常系テストです。過去にコピーされていた未検証テストと旧スクリプトは、ローカルの`staging-results/2026-11-04/2.4.2/migration`へハッシュ付きで退避しました。削除して失ったわけではありません。
+`src/test/java`は既存の単体試験、`tests/integration/java`はJDBC・migration試験、`src/test/compat/ports/java`は他29版の設定テスト、`tests/tools`はビルド・成果物・公開処理の異常系テストです。過去にコピーされていた未検証テストと旧スクリプトは、ローカルの`staging-results/2026-11-04/2.4.2/migration`へハッシュ付きで退避しました。削除して失ったわけではありません。
 
 ### 実行と安全条件
 
@@ -148,3 +147,30 @@ Release公開は別の手動workflowです。同じrepoのmain上で成功した
 配布物は版別JAR・`SHA256SUMS`・`manifest.json`のみです。検証ログ・JUnit・World・設定・キャッシュ・秘密情報は混ぜません。ソースコードと生成物は分離し、新しいJARはGitHub Releasesから取得します。
 
 ZIP/CRC・同梱ライセンス・メタデータ・Mixin設定/refmap・class存在などの構造検査は、実MinecraftでのMixin注入やログイン成功の代わりにはなりません。manifestのruntimeは`NOT_RUN`を明示します。1.18.2以外の機能同等性／runtimeは未確認です。本番の配置・再起動・DB変更も行いません。
+
+## Adding a target / 対応版の追加
+
+1. Inspect the target's actual Java/API/mapping/Mixin contracts. Add its exact dependencies and
+   metadata constraints to `minecraft-versions.json`; retain the 1.18.2 baseline/default unless a
+   separate reviewed baseline migration is intended.
+2. Extend class/Mixin membership in `source-layout.json` only where the implementation is actually
+   compatible. Add a distinct class under `src/compat` for genuine API/behavior differences. Never
+   copy a complete version tree or assume adjacent releases share an API.
+3. If a new Gradle family is needed, add its official distribution configuration/checksum under
+   `gradle/wrapper`. Do not silently change existing targets' toolchains.
+4. Run `python3 tools/project.py check`, the tool tests, then the selected build and full matrix.
+   Review existing-target source/JAR equivalence. A new target requires its own bytecode/Mixin and
+   runtime qualification; successful compilation alone is not full support proof.
+5. Update README's supported ranges and review the generated CI matrix, IDE/default target and
+   release target set. Existing full 1.18.2 tests and every port's configuration tests remain active.
+
+For this structural migration, compare preserved fixed artifacts without modifying them:
+
+```sh
+python3 tools/compare_artifacts.py --baseline /path/to/fixed-2.4.2 \
+  --candidate .verification/all-ports --output .verification/equivalence.json
+```
+
+版を追加する場合も、実際のAPI差を確認し、選択表・依存関係・README・CI対象を同時に更新します。
+既存版の実装を上書きせず、未知の版を既定実装へfallbackさせません。構造移行の候補JARは
+確定2.4.2と別に保存し、既存タグ／Releaseを上書きしません。

@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from project import ROOT, check_layout, load_project, provenance
+from source_layout import build_directory
 from verify_artifacts import inspect_jar
 
 
@@ -24,7 +25,7 @@ def java_home(major: int) -> Path:
                   os.environ.get("JAVA_HOME"), f"/usr/lib/jvm/java-{major}-openjdk-amd64",
                   str(Path.home() / f".gradle/jdks/temurin-{major}")]
     for candidate in filter(None, candidates):
-        executable = Path(candidate) / "bin/java"
+        executable = Path(candidate) / ("bin/java.exe" if os.name == "nt" else "bin/java")
         if executable.is_file():
             result = subprocess.run([str(executable), "-version"], capture_output=True, text=True, timeout=10)
             match = re.search(r'version "([0-9]+)', result.stdout + result.stderr)
@@ -69,7 +70,7 @@ def junit_counts(directory: Path) -> dict:
 def build_target(target: dict, version: str, args: argparse.Namespace, output: Path, source: dict) -> dict:
     check_memory(args.jobs)
     mc = target["minecraft"]
-    directory = ROOT / mc
+    directory = build_directory(ROOT, mc)
     environment = os.environ.copy()
     environment["JAVA_HOME"] = str(java_home(target["java"]))
     for key in ("JAVA_TOOL_OPTIONS", "_JAVA_OPTIONS"):
@@ -82,7 +83,7 @@ def build_target(target: dict, version: str, args: argparse.Namespace, output: P
             if key.startswith("STATELINK_TEST_MYSQL_"):
                 environment.pop(key)
     tasks = ["mysqlTest"] if args.mysql_only else ["test"] + (["mysqlTest"] if needs_mysql else []) + ["build"]
-    command = ["./gradlew", "--no-daemon", "--max-workers=1", "--rerun-tasks",
+    command = [str(ROOT / "gradlew"), f"-Pminecraft_version={mc}", "--no-daemon", "--max-workers=1", "--rerun-tasks",
                "-Dorg.gradle.jvmargs=-Xmx768m -XX:ActiveProcessorCount=2", "-Dorg.gradle.parallel=false"]
     if args.offline:
         command.append("--offline")
@@ -92,15 +93,15 @@ def build_target(target: dict, version: str, args: argparse.Namespace, output: P
     started = time.monotonic()
     print(f"START {mc}: Java {target['java']}, tasks={','.join(tasks)}", flush=True)
     with log.open("w") as stream:
-        result = subprocess.run(command, cwd=directory, env=environment, stdout=stream,
+        result = subprocess.run(command, cwd=ROOT, env=environment, stdout=stream,
                                 stderr=subprocess.STDOUT, timeout=1800)
     if result.returncode:
         raise ValueError(f"{mc}: Gradle failed; see {log}")
     qualification = {"schema": 1, "mod_version": version, "minecraft": mc, **source,
                      "verification_run_id": os.environ.get("GITHUB_RUN_ID"),
                      "test_scope": "primary-unit" if target["primary"] else "configuration-only",
-                     "unit": None if args.mysql_only else junit_counts(directory / "build/test-results/test"),
-                     "mysql": junit_counts(directory / "build/test-results/mysqlTest") if needs_mysql else None,
+                     "unit": None if args.mysql_only else junit_counts(directory / "test-results/test"),
+                     "mysql": junit_counts(directory / "test-results/mysqlTest") if needs_mysql else None,
                      "seconds": round(time.monotonic() - started, 3)}
     reports = output / "junit" / mc
     reports.mkdir(parents=True)
@@ -108,14 +109,14 @@ def build_target(target: dict, version: str, args: argparse.Namespace, output: P
         if task not in ("test", "mysqlTest"):
             continue
         task_reports = reports / task
-        shutil.copytree(directory / "build/test-results" / task, task_reports,
+        shutil.copytree(directory / "test-results" / task, task_reports,
                         ignore=shutil.ignore_patterns("binary"))
     if provenance() != source:
         raise ValueError("Git HEAD/worktree status changed during build; evidence cannot be adopted")
     if args.mysql_only:
         filename = "mysql-qualification.json"
     else:
-        artifact = directory / "build/libs" / f"StateLink-{version}-mc{mc}.jar"
+        artifact = directory / "libs" / f"StateLink-{version}-mc{mc}.jar"
         inspected = inspect_jar(artifact, target, version)
         qualification["artifact"] = inspected
         shutil.copy2(artifact, output / artifact.name)

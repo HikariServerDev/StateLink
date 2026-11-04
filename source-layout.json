@@ -1,0 +1,2050 @@
+{
+  "schema": 1,
+  "common_java": "src/main/java",
+  "variants": [
+    {
+      "path": "com/atsukigames/statelink/RecoveryCommands.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/RecoveryCommands.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/RecoveryCommands.java",
+      "source": "src/compat/mc-1.19/java/com/atsukigames/statelink/RecoveryCommands.java",
+      "targets": [
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/RecoveryCommands.java",
+      "source": "src/compat/mc-1.20/java/com/atsukigames/statelink/RecoveryCommands.java",
+      "targets": [
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/RecoveryCommands.java",
+      "source": "src/compat/mc-1.21.11/java/com/atsukigames/statelink/RecoveryCommands.java",
+      "targets": [
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/RecoveryCommands.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/RecoveryCommands.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/StateLink.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/StateLink.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/StateLink.java",
+      "source": "src/compat/mc-1.20.5/java/com/atsukigames/statelink/StateLink.java",
+      "targets": [
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/StateLink.java",
+      "source": "src/compat/mc-1.21.2/java/com/atsukigames/statelink/StateLink.java",
+      "targets": [
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/StateLink.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/StateLink.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/config/Configuration.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/config/Configuration.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/config/Configuration.java",
+      "source": "src/compat/mc-1.18.2/java/com/atsukigames/statelink/config/Configuration.java",
+      "targets": [
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/database/DatabaseManager.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/database/DatabaseManager.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/database/DatabaseManager.java",
+      "source": "src/compat/mc-1.18.2/java/com/atsukigames/statelink/database/DatabaseManager.java",
+      "targets": [
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/database/PlayerDataRepository.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/database/PlayerDataRepository.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/database/PlayerDataRepository.java",
+      "source": "src/compat/mc-1.18.2/java/com/atsukigames/statelink/database/PlayerDataRepository.java",
+      "targets": [
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/database/RecoveryFreshness.java",
+      "source": "src/compat/mc-1.18.2/java/com/atsukigames/statelink/database/RecoveryFreshness.java",
+      "targets": [
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/database/SchemaGeneration.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/database/SchemaGeneration.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/database/SchemaGeneration.java",
+      "source": "src/compat/mc-1.18.2/java/com/atsukigames/statelink/database/SchemaGeneration.java",
+      "targets": [
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/database/VerifiedStateTimestamp.java",
+      "source": "src/compat/mc-1.18.2/java/com/atsukigames/statelink/database/VerifiedStateTimestamp.java",
+      "targets": [
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/AdvancementTrackerAccess.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/AdvancementTrackerAccess.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/AdvancementTrackerAccess.java",
+      "source": "src/compat/mc-1.19.4/java/com/atsukigames/statelink/mixin/AdvancementTrackerAccess.java",
+      "targets": [
+        "1.19.4",
+        "1.20",
+        "1.20.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/AdvancementTrackerAccess.java",
+      "source": "src/compat/mc-1.20.2/java/com/atsukigames/statelink/mixin/AdvancementTrackerAccess.java",
+      "targets": [
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/AdvancementTrackerAccess.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/AdvancementTrackerAccess.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/AdvancementsDirtyMixin.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/AdvancementsDirtyMixin.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/AdvancementsDirtyMixin.java",
+      "source": "src/compat/mc-1.20.2/java/com/atsukigames/statelink/mixin/AdvancementsDirtyMixin.java",
+      "targets": [
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/AdvancementsDirtyMixin.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/AdvancementsDirtyMixin.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/CriterionProgressAccess.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/CriterionProgressAccess.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/CriterionProgressAccess.java",
+      "source": "src/compat/mc-1.20.2/java/com/atsukigames/statelink/mixin/CriterionProgressAccess.java",
+      "targets": [
+        "1.20.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/CriterionProgressAccess.java",
+      "source": "src/compat/mc-1.20.3/java/com/atsukigames/statelink/mixin/CriterionProgressAccess.java",
+      "targets": [
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/CriterionProgressAccess.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/CriterionProgressAccess.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/DisconnectOnServerThreadMixin.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/DisconnectOnServerThreadMixin.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/DisconnectOnServerThreadMixin.java",
+      "source": "src/compat/mc-1.20.2/java/com/atsukigames/statelink/mixin/DisconnectOnServerThreadMixin.java",
+      "targets": [
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/DisconnectOnServerThreadMixin.java",
+      "source": "src/compat/mc-1.21/java/com/atsukigames/statelink/mixin/DisconnectOnServerThreadMixin.java",
+      "targets": [
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/DisconnectOnServerThreadMixin.java",
+      "source": "src/compat/mc-1.21.9/java/com/atsukigames/statelink/mixin/DisconnectOnServerThreadMixin.java",
+      "targets": [
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/DisconnectOnServerThreadMixin.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/DisconnectOnServerThreadMixin.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/HungerManagerAccessor.java",
+      "source": "src/compat/mc-1.21.2/java/com/atsukigames/statelink/mixin/HungerManagerAccessor.java",
+      "targets": [
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/HungerManagerAccessor.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/HungerManagerAccessor.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LivingEntityAccessor.java",
+      "source": "src/compat/mc-1.21.5/java/com/atsukigames/statelink/mixin/LivingEntityAccessor.java",
+      "targets": [
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LivingEntityAccessor.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/LivingEntityAccessor.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantineMovementMixin.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/LoadingQuarantineMovementMixin.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantineMovementMixin.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/LoadingQuarantineMovementMixin.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantineNetworkMixin.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/LoadingQuarantineNetworkMixin.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantineNetworkMixin.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/LoadingQuarantineNetworkMixin.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantinePickupMixin.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/LoadingQuarantinePickupMixin.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantinePickupMixin.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/LoadingQuarantinePickupMixin.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "source": "src/compat/mc-1.19.4/java/com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "targets": [
+        "1.19.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "source": "src/compat/mc-1.20/java/com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "targets": [
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "source": "src/compat/mc-1.21.2/java/com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "targets": [
+        "1.21.2",
+        "1.21.3",
+        "1.21.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "source": "src/compat/mc-1.21.5/java/com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "targets": [
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "source": "src/compat/mc-1.21.11/java/com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "targets": [
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "targets": [
+        "26.1",
+        "26.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "source": "src/compat/mc-26.3/java/com/atsukigames/statelink/mixin/LoadingQuarantineServerPlayerMixin.java",
+      "targets": [
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/PlayerEntityProfileAccessor.java",
+      "source": "src/compat/mc-1.21.9/java/com/atsukigames/statelink/mixin/PlayerEntityProfileAccessor.java",
+      "targets": [
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/PlayerEntityProfileAccessor.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/PlayerEntityProfileAccessor.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/RecipeBookDirtyMixin.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/RecipeBookDirtyMixin.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/RecipeBookDirtyMixin.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/RecipeBookDirtyMixin.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/ServerStatHandlerAccess.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/ServerStatHandlerAccess.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/ServerStatHandlerAccess.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/ServerStatHandlerAccess.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/StatHandlerAccess.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/StatHandlerAccess.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/StatHandlerAccess.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/StatHandlerAccess.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/StatisticsDirtyMixin.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/StatisticsDirtyMixin.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/StatisticsDirtyMixin.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/mixin/StatisticsDirtyMixin.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/VanillaLoginWorldRestoreMixin.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/mixin/VanillaLoginWorldRestoreMixin.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/mixin/VanillaLoginWorldRestoreMixin.java",
+      "source": "src/compat/mc-1.20/java/com/atsukigames/statelink/mixin/VanillaLoginWorldRestoreMixin.java",
+      "targets": [
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/CheckpointCapture.java",
+      "source": "src/compat/mc-1.18.2/java/com/atsukigames/statelink/sync/CheckpointCapture.java",
+      "targets": [
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PerPlayerSerialExecutor.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/sync/PerPlayerSerialExecutor.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PerPlayerSerialExecutor.java",
+      "source": "src/compat/mc-1.18.2/java/com/atsukigames/statelink/sync/PerPlayerSerialExecutor.java",
+      "targets": [
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerEligibility.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/sync/PlayerEligibility.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerEligibility.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/sync/PlayerEligibility.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerSessionContext.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/sync/PlayerSessionContext.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerSessionContext.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/sync/PlayerSessionContext.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerSessionManager.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/sync/PlayerSessionManager.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerSessionManager.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/sync/PlayerSessionManager.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "source": "src/compat/mc-1.18.2/java/com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "targets": [
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "source": "src/compat/mc-1.21.2/java/com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "targets": [
+        "1.21.2",
+        "1.21.3",
+        "1.21.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "source": "src/compat/mc-1.21.5/java/com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "targets": [
+        "1.21.5"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "source": "src/compat/mc-1.21.6/java/com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "targets": [
+        "1.21.6",
+        "1.21.7",
+        "1.21.8"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "source": "src/compat/mc-1.21.9/java/com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "targets": [
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/sync/PlayerSyncCoordinator.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/RecoveryMessages.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/sync/RecoveryMessages.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/sync/RecoveryMessages.java",
+      "source": "src/compat/mc-1.18.2/java/com/atsukigames/statelink/sync/RecoveryMessages.java",
+      "targets": [
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CheckpointDigest.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/utils/CheckpointDigest.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11",
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CheckpointDigest.java",
+      "source": "src/compat/mc-1.18.2/java/com/atsukigames/statelink/utils/CheckpointDigest.java",
+      "targets": [
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "source": "src/compat/mc-1.19.3/java/com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "targets": [
+        "1.19.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "source": "src/compat/mc-1.19.4/java/com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "targets": [
+        "1.19.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "source": "src/compat/mc-1.20/java/com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "targets": [
+        "1.20",
+        "1.20.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "source": "src/compat/mc-1.20.2/java/com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "targets": [
+        "1.20.2",
+        "1.20.3",
+        "1.20.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "source": "src/compat/mc-1.20.5/java/com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "targets": [
+        "1.20.5",
+        "1.20.6"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "source": "src/compat/mc-1.21/java/com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "targets": [
+        "1.21",
+        "1.21.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "source": "src/compat/mc-1.21.2/java/com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "targets": [
+        "1.21.2",
+        "1.21.3",
+        "1.21.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "source": "src/compat/mc-1.21.5/java/com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "targets": [
+        "1.21.5"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "source": "src/compat/mc-1.21.6/java/com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "targets": [
+        "1.21.6",
+        "1.21.7",
+        "1.21.8"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "source": "src/compat/mc-1.21.9/java/com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "targets": [
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/utils/CompletePlayerDataSerializer.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/DisconnectTransientInventoryPolicy.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/utils/DisconnectTransientInventoryPolicy.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/DisconnectTransientInventoryPolicy.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/utils/DisconnectTransientInventoryPolicy.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/NBTUtils.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/utils/NBTUtils.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "source": "src/compat/mc-1.19.3/java/com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "targets": [
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "source": "src/compat/mc-1.20.2/java/com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "targets": [
+        "1.20.2",
+        "1.20.3",
+        "1.20.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "source": "src/compat/mc-1.20.5/java/com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "targets": [
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "source": "src/compat/mc-1.21.2/java/com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "targets": [
+        "1.21.2",
+        "1.21.3",
+        "1.21.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "source": "src/compat/mc-1.21.5/java/com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "targets": [
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "source": "src/compat/mc-1.21.9/java/com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "targets": [
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/utils/PlayerChangeObserver.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerEquipment.java",
+      "source": "src/compat/mc-1.21.5/java/com/atsukigames/statelink/utils/PlayerEquipment.java",
+      "targets": [
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerEquipment.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/utils/PlayerEquipment.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "source": "src/compat/mc-1.19/java/com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "targets": [
+        "1.19",
+        "1.19.1",
+        "1.19.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "source": "src/compat/mc-1.19.3/java/com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "targets": [
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "source": "src/compat/mc-1.20.2/java/com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "targets": [
+        "1.20.2",
+        "1.20.3",
+        "1.20.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "source": "src/compat/mc-1.20.5/java/com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "targets": [
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "source": "src/compat/mc-1.21.9/java/com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "targets": [
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/utils/PlayerProfileCodec.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "source": "src/compat/mc-1.19.3/java/com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "targets": [
+        "1.19.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "source": "src/compat/mc-1.19.4/java/com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "targets": [
+        "1.19.4",
+        "1.20",
+        "1.20.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "source": "src/compat/mc-1.20.2/java/com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "targets": [
+        "1.20.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "source": "src/compat/mc-1.20.3/java/com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "targets": [
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "source": "src/compat/mc-1.21/java/com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "targets": [
+        "1.21",
+        "1.21.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "source": "src/compat/mc-1.21.2/java/com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "targets": [
+        "1.21.2",
+        "1.21.3",
+        "1.21.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "source": "src/compat/mc-1.21.5/java/com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "targets": [
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "source": "src/compat/mc-1.21.9/java/com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "targets": [
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "targets": [
+        "26.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "source": "src/compat/mc-26.2/java/com/atsukigames/statelink/utils/PlayerProgressCodec.java",
+      "targets": [
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "source": "src/compat/mc-1.20.2/java/com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "targets": [
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "source": "src/compat/mc-1.21/java/com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "targets": [
+        "1.21",
+        "1.21.1"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "source": "src/compat/mc-1.21.2/java/com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "targets": [
+        "1.21.2",
+        "1.21.3",
+        "1.21.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "source": "src/compat/mc-1.21.5/java/com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "targets": [
+        "1.21.5"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "source": "src/compat/mc-1.21.6/java/com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "targets": [
+        "1.21.6",
+        "1.21.7",
+        "1.21.8"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "source": "src/compat/mc-1.21.9/java/com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "targets": [
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/utils/PlayerRecipeCodec.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/RegistryContext.java",
+      "source": "src/compat/mc-1.20.5/java/com/atsukigames/statelink/utils/RegistryContext.java",
+      "targets": [
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/RegistryContext.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/utils/RegistryContext.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/SerializationUtils.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/utils/SerializationUtils.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/SerializationUtils.java",
+      "source": "src/compat/mc-1.19.3/java/com/atsukigames/statelink/utils/SerializationUtils.java",
+      "targets": [
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/SpatialMutationScope.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/utils/SpatialMutationScope.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/SpatialMutationScope.java",
+      "source": "src/compat/mc-1.21.9/java/com/atsukigames/statelink/utils/SpatialMutationScope.java",
+      "targets": [
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/SpatialMutationScope.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/utils/SpatialMutationScope.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/StatisticsDirtyPolicy.java",
+      "source": "src/compat/mc-1.18/java/com/atsukigames/statelink/utils/StatisticsDirtyPolicy.java",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4",
+        "1.20.5",
+        "1.20.6"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/StatisticsDirtyPolicy.java",
+      "source": "src/compat/mc-1.21/java/com/atsukigames/statelink/utils/StatisticsDirtyPolicy.java",
+      "targets": [
+        "1.21",
+        "1.21.1",
+        "1.21.2",
+        "1.21.3",
+        "1.21.4",
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8",
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "path": "com/atsukigames/statelink/utils/StatisticsDirtyPolicy.java",
+      "source": "src/compat/mc-26.1/java/com/atsukigames/statelink/utils/StatisticsDirtyPolicy.java",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    }
+  ],
+  "mixins": [
+    {
+      "source": "src/compat/mc-1.18/resources/statelink.mixins.json",
+      "targets": [
+        "1.18",
+        "1.18.1",
+        "1.18.2",
+        "1.19",
+        "1.19.1",
+        "1.19.2",
+        "1.19.3",
+        "1.19.4",
+        "1.20",
+        "1.20.1",
+        "1.20.2",
+        "1.20.3",
+        "1.20.4"
+      ]
+    },
+    {
+      "source": "src/compat/mc-1.20.5/resources/statelink.mixins.json",
+      "targets": [
+        "1.20.5",
+        "1.20.6",
+        "1.21",
+        "1.21.1"
+      ]
+    },
+    {
+      "source": "src/compat/mc-1.21.2/resources/statelink.mixins.json",
+      "targets": [
+        "1.21.2",
+        "1.21.3",
+        "1.21.4"
+      ]
+    },
+    {
+      "source": "src/compat/mc-1.21.5/resources/statelink.mixins.json",
+      "targets": [
+        "1.21.5",
+        "1.21.6",
+        "1.21.7",
+        "1.21.8"
+      ]
+    },
+    {
+      "source": "src/compat/mc-1.21.9/resources/statelink.mixins.json",
+      "targets": [
+        "1.21.9",
+        "1.21.10",
+        "1.21.11"
+      ]
+    },
+    {
+      "source": "src/compat/mc-26.1/resources/statelink.mixins.json",
+      "targets": [
+        "26.1",
+        "26.2",
+        "26.3"
+      ]
+    }
+  ]
+}
