@@ -68,14 +68,12 @@ if (target.minecraft == inventory.regression_baseline) {
         }
         rehearsal {
             java.srcDir new File(statelinkRoot, 'tools/rehearsal/java')
-            compileClasspath += sourceSets.main.output
-            runtimeClasspath += sourceSets.main.output
+            compileClasspath = sourceSets.main.compileClasspath + sourceSets.main.output
+            runtimeClasspath = output + sourceSets.main.runtimeClasspath
         }
     }
-    configurations {
-        rehearsalImplementation.extendsFrom implementation
-        rehearsalRuntimeOnly.extendsFrom runtimeOnly
-    }
+    // Previously compiled in the test source set; keep compile coverage without executing it.
+    tasks.named('check') { dependsOn tasks.named('compileRehearsalJava') }
     tasks.register('productionCopyRehearsal', JavaExec) {
         classpath = sourceSets.rehearsal.runtimeClasspath
         mainClass = 'com.atsukigames.statelink.rehearsal.ProductionCopyRehearsal'
