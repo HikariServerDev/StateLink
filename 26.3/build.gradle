@@ -5,7 +5,7 @@ plugins {
 
 group = 'com.atsukigames'
 base { archivesName = 'StateLink' }
-version = project.hasProperty('mod_version') ? project.mod_version : '2.4.1'
+version = project.hasProperty('mod_version') ? project.mod_version : '2.4.2'
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(25)
@@ -56,3 +56,5 @@ tasks.withType(JavaCompile).configureEach {
 tasks.test {
     useJUnitPlatform()
 }
+
+apply from: '../gradle/common.gradle'

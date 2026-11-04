@@ -2,6 +2,10 @@
 
 **Minecraft 1.18 – 1.21.11, 26.1 – 26.3 / Fabric** — by AtsukiMC
 
+**Downloads:** use the matching JAR from [GitHub Releases](https://github.com/HikariServerDev/StateLink/releases). From 2.4.2, generated JARs are no longer committed to `build/`; each release contains the exact target set, `SHA256SUMS` and `manifest.json`. The license is **LGPL-3.0-only**, with both license texts included in each JAR. Build/CI/archive checks are not Minecraft runtime or production-login approval.
+
+**ダウンロード:** [GitHub Releases](https://github.com/HikariServerDev/StateLink/releases)から対象Minecraft版のJARを取得してください。2.4.2以降は生成JARをGitの`build/`に登録せず、Releaseに版別JAR・`SHA256SUMS`・`manifest.json`をまとめます。ライセンスは**LGPL-3.0-only**に統一し、必要なライセンス文書をJARへ同梱します。ビルド・CI・成果物検査の成功は、実Minecraftや本番でのログイン成功を意味しません。
+
 **2.4.1 login fix:** scoreboard/team prefixes and suffixes are local presentation, not profile identity. A different stored display label no longer rejects a login. UUID, account-name and profile-property validation remain enforced; no scoreboard or login identity is renamed.
 
 **2.4.1のログイン修正:** チームのprefix/suffixなどの表示名はサーバーごとの装飾として扱い、保存時と異なっていても接続を拒否しません。UUID・アカウント名・プロフィール内容の検証は維持します。ログインIDやscoreboardは変更しません。
@@ -30,7 +34,7 @@ Each item can be switched on or off in the config file. Anything you turn off is
 
 ### Requirements
 
-- Minecraft 1.18, 1.18.1, 1.18.2, 1.19–1.19.4, 1.20–1.20.6, 1.21–1.21.11, 26.1, 26.2 or 26.3 with a recent Fabric Loader (0.17.3 or newer)
+- Minecraft 1.18–1.21.11 with Fabric Loader 0.17.3 or newer, or 26.1–26.3 with Loader 0.19.5 or newer. Exact tested build dependencies are listed in [minecraft-versions.json](minecraft-versions.json).
 - The Fabric API that matches your Minecraft version
 - Java 17 for Minecraft up to 1.20.4, Java 21 for 1.20.5 – 1.21.11, Java 25 for 26.x
 - A MySQL 8 database that all your servers can reach
@@ -38,8 +42,8 @@ Each item can be switched on or off in the config file. Anything you turn off is
 
 ### Installation
 
-1. Pick the jar for your Minecraft version (`StateLink-2.4.1-mc<version>.jar`, for example `-mc1.21.4.jar`) and put it into the `mods` folder of every server.
-2. Start the server once. A config file is created at `config/statelink.json` and the mod stays inactive.
+1. Download the JAR for your Minecraft version (`StateLink-2.4.2-mc<version>.jar`, for example `-mc1.21.4.jar`), check its SHA-256 against the release manifest, and put it into the `mods` folder of every server.
+2. Start the server once to create `config/statelink.json`. Initialization is intentionally refused until the database fields are configured; this prevents a default writer from starting accidentally.
 3. Stop the server and fill in the database `host`, `name`, `username` and `password`.
 4. Give each server its own `serverId` (for example `s1`, `s2`).
 5. Start all servers. Players are now synchronized.
@@ -55,10 +59,10 @@ StateLink is the new name of PlayerDataConnector. To upgrade a server:
 On that first start StateLink finds the old files and takes them over by itself:
 
 - `config/playerdataconnector.json` is renamed to `config/statelink.json`. Its contents are not changed.
-- Your database is used as it is. StateLink connects to the same database and tables, and nothing in the database is renamed or converted.
+- Database/table names stay the same. Startup validates the schema and adds required coordination metadata; always back up the database before upgrading.
 - No file is deleted or overwritten. If both an old and a new config file exist with different settings, the server stops and asks you to keep one, instead of guessing.
 
-**Upgrade all backends together.** Stop every server that writes this database, take a database backup, replace the mod on every backend, and only then start the new servers. StateLink 2.3.0 added nullable coordination metadata that PlayerDataConnector 2.2.9 does not recognize; rolling upgrades and mixed 2.2.9/2.3.x/2.4.0 writers are unsupported. Do not roll back by replacing only the JAR. A rollback requires all writers stopped and a coordinated database restore to a compatible backup.
+**Upgrade all backends together.** Stop every server that writes this database, take a database backup, replace the mod on every backend, and only then start the new servers. StateLink 2.3.0 added nullable coordination metadata that PlayerDataConnector 2.2.9 does not recognize; rolling upgrades and mixed old/new writers are unsupported. Do not roll back by replacing only the JAR. A rollback requires all writers stopped and a coordinated database restore to a compatible backup.
 
 StateLink 2.3.1 binds each immutable checkpoint to the dirty-change version observed at capture. If an idle-state comparison reports changed data, the snapshot is recaptured on the Minecraft server thread rather than saving the older comparison snapshot. Verified-state freshness is dated conservatively from capture time; delayed database work cannot make an old capture appear newer.
 
@@ -126,7 +130,7 @@ The config file is `config/statelink.json`. Restart the server after changing it
 | `database.tableName` | `player_data` | Name of the table. Letters, numbers and `_` only. |
 | `database.sslEnabled` | `false` | Use an encrypted connection to MySQL. |
 | `database.maxConnections` | `10` | Maximum number of simultaneous database connections (2 or more). |
-| `database.leaseRenewalPoolSize` | `3` | Additional bounded connections reserved for lease renewals so ordinary saves cannot consume all renewal capacity. |
+| `database.leaseRenewalPoolSize` | `3` (1.18.2) | Primary-port feature: bounded connections reserved for lease renewals. Other API ports do not yet have full 2.3.x feature parity. |
 | `database.connectionTimeoutMs` | `2500` | Maximum wait to acquire a DB connection. |
 | `database.socketTimeoutMs` | `2500` | JDBC socket read timeout. |
 | `database.queryTimeoutMs` | `2500` | Per-statement timeout. |
@@ -139,14 +143,14 @@ The server rejects timing combinations that cannot fit a bounded renewal attempt
 | Setting | Meaning |
 |---|---|
 | `serverId` | A unique name for this server (for example `s1`). **Must differ on every server.** |
-| `leaseDurationMs` | `15000` — Database ownership lease length. Keep the same value on every backend. |
-| `leaseRenewIntervalMs` | `3000` — How often the backend renews its lease. The configuration is rejected if timeout bounds leave insufficient time for renewal and a fresh authority recheck. |
+| `leaseDurationMs` | Default `15000` on 1.18.2, `5000` on the other API ports. Database ownership lease length; keep the configured value identical across backends. |
+| `leaseRenewIntervalMs` | Default `3000` on 1.18.2, `1500` on the other API ports. Review lease/timeout headroom; values are not silently rewritten. |
 | `inventory` | Inventory contents. If you turn this off, `armor`, `offhand` and `enderchest` must be off too. |
 | `armor`, `offhand`, `enderchest` | Armor, off-hand item and ender chest. |
 | `health`, `food`, `experience`, `effects` | Health, hunger, experience level and potion effects. |
 | `position` | Position and dimension. Rotation follows it unless set separately with `rotation`. |
 | `dimension`, `rotation` | Follow `position` when omitted; otherwise independently enable dimension and yaw/pitch synchronization. |
-| `syncOnDimensionChange` | `true` | Triggers a synchronization operation on dimension change; it does not enable the `dimension` data domain. |
+| `syncOnDimensionChange` | `true` — Triggers synchronization on dimension change; it does not enable the `dimension` data domain. |
 | `gamemode` | Game mode and flying state. |
 | `advancements`, `statistics`, `recipeBook` | Advancements, statistics and the recipe book. |
 | `playerProfile` | Skin and profile properties. Login UUID/name remain validated; backend-local team/display labels are not applied or compared. |
@@ -196,6 +200,10 @@ If the file is missing or broken, the server refuses to start instead of guessin
 
 ---
 
+### Development, verification and license
+
+See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for the actual directory layout, common local/CI commands, isolated MySQL rules, release gates and verification limits. StateLink is licensed under [LGPL-3.0-only](LICENSE); [COPYING](COPYING) contains its referenced GPL text. Bundled libraries retain their original terms.
+
 ## 日本語
 
 StateLink は、Minecraft 用(対応バージョンは下記)の **サーバー側** Fabric Mod です。1つの MySQL データベースを共有する複数のサーバー間で、プレイヤーのデータを同じ状態に保ちます。サーバーを移動しても、アイテム・経験値・体力・進捗がそのまま引き継がれます。
@@ -212,7 +220,7 @@ StateLink は、Minecraft 用(対応バージョンは下記)の **サーバー�
 
 ### 必要なもの
 
-- Minecraft 1.18、1.18.1、1.18.2、1.19〜1.19.4、1.20〜1.20.6、1.21〜1.21.11、26.1、26.2、26.3 と、新しい Fabric Loader(0.17.3 以上)
+- Minecraft 1.18〜1.21.11はFabric Loader 0.17.3以上、26.1〜26.3は0.19.5以上。版別の依存関係は[minecraft-versions.json](minecraft-versions.json)を参照してください。
 - お使いの Minecraft バージョンに合った Fabric API
 - Java:1.20.4 以下は Java 17、1.20.5〜1.21.11 は Java 21、26.x は Java 25
 - すべてのサーバーから接続できる MySQL 8
@@ -220,8 +228,8 @@ StateLink は、Minecraft 用(対応バージョンは下記)の **サーバー�
 
 ### 導入方法
 
-1. すべてのサーバーの `mods` フォルダに、お使いの Minecraft バージョン用の jar(`StateLink-2.4.1-mc<バージョン>.jar`、例:`-mc1.21.4.jar`)を入れます。
-2. サーバーを一度起動します。`config/statelink.json` が作成され、この時点では Mod は動作しません。
+1. お使いのMinecraft版のJAR（`StateLink-2.4.2-mc<バージョン>.jar`）を取得し、ReleaseのSHA-256と照合してから、すべてのサーバーの`mods`へ配置します。
+2. サーバーを一度起動し、`config/statelink.json`を生成します。未設定のwriterが動かないよう、DB情報を入力するまでは意図的に初期化を拒否します。
 3. サーバーを停止し、データベースの `host`・`name`・`username`・`password` を入力します。
 4. サーバーごとに別の `serverId`(例: `s1`、`s2`)を設定します。
 5. すべてのサーバーを起動すると、同期が始まります。
@@ -237,10 +245,10 @@ StateLink は PlayerDataConnector の新しい名前です。移行の手順は�
 最初の起動時に、StateLink が古いファイルを見つけて自動で引き継ぎます。
 
 - `config/playerdataconnector.json` は `config/statelink.json` に名前が変わります。内容は変更されません。
-- データベースはそのまま使われます。同じデータベース・同じテーブルに接続し、データベース内の名前変更や変換は行いません。
+- DB名・テーブル名は維持します。起動時にスキーマを検証し、必要なcoordination metadataを追加するため、更新前にDBバックアップを取得してください。
 - ファイルの削除や上書きは行いません。古い設定ファイルと新しい設定ファイルの両方があり、内容が異なる場合は、どちらかを推測して使うことはせず、サーバーを止めて確認を求めます。
 
-**全backendをまとめて更新してください。** データベースへ書き込むすべてのサーバーを停止し、DBバックアップを取得してから、全台のModを交換して起動します。StateLink 2.3.0はnullableなcoordination metadataを追加し、PlayerDataConnector 2.2.9はその列を認識しません。段階更新および2.2.9/2.3.x/2.4.0の混在writerは非対応です。JARだけを戻すrollbackも安全ではありません。rollback時は全writer停止のうえ、互換性のある更新前DBバックアップへ一括で戻してください。
+**全backendをまとめて更新してください。** データベースへ書き込むすべてのサーバーを停止し、DBバックアップを取得してから、全台のModを交換して起動します。StateLink 2.3.0はnullableなcoordination metadataを追加し、PlayerDataConnector 2.2.9はその列を認識しません。旧版と新版の混在writer・段階更新は非対応です。JARだけを戻すrollbackも安全ではありません。rollback時は全writer停止のうえ、互換性のある更新前DBバックアップへ一括で戻してください。
 
 StateLink 2.3.1では、不変snapshotとcapture時点のdirty versionを一体として扱います。idle-state比較で差分が見つかった場合は、古い比較用snapshotを流用せずMinecraft server threadで再captureします。verified-stateの鮮度もcapture時刻を基準に保守的に記録し、DB待ちによって古いsnapshotが新しく見えることを防ぎます。
 
@@ -308,7 +316,7 @@ StateLink 2.3.1では、不変snapshotとcapture時点のdirty versionを一体�
 | `database.tableName` | `player_data` | テーブル名。英数字と `_` のみ。 |
 | `database.sslEnabled` | `false` | MySQL への接続を暗号化します。 |
 | `database.maxConnections` | `10` | 同時に使うデータベース接続の上限(2以上)。 |
-| `database.leaseRenewalPoolSize` | `3` | 通常SAVEに使い切られないよう、lease更新専用に追加確保するbounded接続数。 |
+| `database.leaseRenewalPoolSize` | `3`（1.18.2） | 1.18.2の機能。lease更新専用の接続数。他版には2.3.xの全改善を移植したわけではありません。 |
 | `database.connectionTimeoutMs` | `2500` | DB接続取得の最大待機時間。 |
 | `database.socketTimeoutMs` | `2500` | JDBC socket読み取りtimeout。 |
 | `database.queryTimeoutMs` | `2500` | SQL statementごとのtimeout。 |
@@ -321,14 +329,14 @@ serverは、boundedなlease更新と新規接続によるownership再確認がle
 | 設定 | 内容 |
 |---|---|
 | `serverId` | このサーバーの固有名(例: `s1`)。**サーバーごとに必ず別の値にしてください。** |
-| `leaseDurationMs` | `15000` — DB所有権leaseの長さ。すべてのbackendで同じ値にします。 |
-| `leaseRenewIntervalMs` | `3000` — lease更新間隔。timeout設定が更新とfreshなauthority再確認に必要な時間を確保できない場合は拒否されます。 |
+| `leaseDurationMs` | 初期値は1.18.2で`15000`、他のAPI版で`5000`。DB所有権leaseの長さ。実際の設定値は全backendで統一してください。 |
+| `leaseRenewIntervalMs` | 初期値は1.18.2で`3000`、他のAPI版で`1500`。lease期間とDB timeoutの余裕を確認してください。値は自動変更しません。 |
 | `inventory` | インベントリ。オフにする場合は `armor`・`offhand`・`enderchest` もオフにする必要があります。 |
 | `armor`、`offhand`、`enderchest` | 防具、オフハンド、エンダーチェスト。 |
 | `health`、`food`、`experience`、`effects` | 体力、満腹度、経験値レベル、ポーション効果。 |
 | `position` | 位置とディメンション。向きは、`rotation` で別に指定しない限りこれに従います。 |
 | `dimension`、`rotation` | 省略時は `position` に追従。それぞれdimensionとyaw/pitch同期を独立して設定します。 |
-| `syncOnDimensionChange` | `true` | dimension変更時に同期処理を開始します。`dimension` domain自体を有効にする設定ではありません。 |
+| `syncOnDimensionChange` | `true` — dimension変更時に同期処理を開始します。`dimension` domain自体を有効にする設定ではありません。 |
 | `gamemode` | ゲームモードと飛行状態。 |
 | `advancements`、`statistics`、`recipeBook` | 進捗、統計、レシピブック。 |
 | `playerProfile` | スキンなどのプロフィールproperties。UUID・アカウント名を検証し、サーバーごとのチーム装飾・表示名は適用や一致判定の対象にしません。 |
@@ -375,3 +383,7 @@ dirty-only保存では、変更のないプレイヤーのPlayerData行を書き
 - **設定は揃えてください。** 同期の設定はすべてのサーバーで同じにしてください。あるサーバーで項目をオフにして後でオンに戻すと、該当プレイヤーは管理者がどのデータを残すか確認するまで入れません。
 - **Mod やルールも揃えてください。** アイテムの扱いがすべてのサーバーで同じである必要があります。たとえばスタック可能なシュルカーボックスを使う場合は、全サーバーで同じルールを有効にしてください。そうでないと、重ねたボックスを持つプレイヤーは、ルールのないサーバーに入れません。
 - **Mod を無効にするとき。** `"enable": false` にすると何もしなくなります。後で有効に戻す際は、データベースが古い可能性があるため、確認が求められます。
+
+### 開発・検証・ライセンス
+
+実際のディレクトリ構成、ローカル／CI共通コマンド、隔離MySQL、公開条件、未検証範囲は[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)にまとめています。StateLinkのライセンスは[LGPL-3.0-only](LICENSE)です。参照されるGPL本文は[COPYING](COPYING)に収録し、別途同梱するライブラリのライセンスは変更しません。

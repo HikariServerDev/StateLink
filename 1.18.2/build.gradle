@@ -5,7 +5,7 @@ plugins {
 
 group = 'com.atsukigames'
 archivesBaseName = 'StateLink'
-version = project.hasProperty('mod_version') ? project.mod_version : '2.4.1'
+version = project.hasProperty('mod_version') ? project.mod_version : '2.4.2'
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -79,3 +79,5 @@ tasks.register('productionCopyRehearsal', JavaExec) {
     classpath = sourceSets.test.runtimeClasspath
     mainClass = 'com.atsukigames.statelink.rehearsal.ProductionCopyRehearsal'
 }
+
+apply from: '../gradle/common.gradle'

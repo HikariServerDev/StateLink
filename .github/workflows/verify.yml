@@ -1,0 +1,186 @@
+name: StateLink Verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: verify-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.inventory.outputs.matrix }}
+      version: ${{ steps.inventory.outputs.version }}
+      baseline: ${{ steps.inventory.outputs.baseline }}
+      baseline_java: ${{ steps.inventory.outputs.baseline_java }}
+      max_java: ${{ steps.inventory.outputs.max_java }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Check inventory and release-tool rejection tests
+        run: |
+          python3 tools/project.py check
+          python3 -m unittest discover -s tests/tools -v
+      - id: inventory
+        run: |
+          echo "matrix=$(python3 tools/project.py matrix)" >> "$GITHUB_OUTPUT"
+          echo "version=$(python3 tools/project.py version)" >> "$GITHUB_OUTPUT"
+          echo "baseline=$(python3 tools/project.py baseline)" >> "$GITHUB_OUTPUT"
+          echo "baseline_java=$(python3 tools/project.py baseline-java)" >> "$GITHUB_OUTPUT"
+          echo "max_java=$(python3 tools/project.py max-java)" >> "$GITHUB_OUTPUT"
+
+  minecraft:
+    needs: inventory
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.inventory.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+      - name: Build, test and inspect the exact target JAR
+        env:
+          MINECRAFT: ${{ matrix.minecraft }}
+        run: python3 tools/build.py --minecraft "$MINECRAFT" --output artifacts
+      - name: Upload only the qualified JAR and machine-readable record
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: jar-${{ matrix.minecraft }}
+          path: |
+            artifacts/StateLink-*.jar
+            artifacts/qualification-mc*.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Keep JUnit and build logs separate from release assets
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: tests-${{ matrix.minecraft }}
+          path: |
+            artifacts/logs/
+            artifacts/build-results.json
+            ${{ matrix.minecraft }}/build/test-results/test/TEST-*.xml
+          if-no-files-found: warn
+          retention-days: 7
+
+  mysql:
+    needs: inventory
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      mysql:
+        image: mysql:8.0.46
+        env:
+          MYSQL_ROOT_PASSWORD: statelink-ci-only
+          MYSQL_ROOT_HOST: '%'
+          MYSQL_DATABASE: statelink_test_ci
+        ports:
+          - 33306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -pstatelink-ci-only"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=24
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: ${{ needs.inventory.outputs.baseline_java }}
+      - name: Bound the isolated service resources
+        env:
+          MYSQL_CONTAINER: ${{ job.services.mysql.id }}
+          CI_TEST_PASSWORD: statelink-ci-only
+        run: |
+          docker exec -e MYSQL_PWD="$CI_TEST_PASSWORD" "$MYSQL_CONTAINER" mysql -uroot -e \
+            'SET GLOBAL innodb_buffer_pool_size=268435456; SET GLOBAL innodb_redo_log_capacity=268435456; SELECT VERSION();'
+      - name: Run the real-MySQL suite (never the production port/database)
+        env:
+          BASELINE: ${{ needs.inventory.outputs.baseline }}
+          STATELINK_TEST_MYSQL_HOST: 127.0.0.1
+          STATELINK_TEST_MYSQL_PORT: '33306'
+          STATELINK_TEST_MYSQL_DATABASE: statelink_test_ci
+          STATELINK_TEST_MYSQL_USERNAME: root
+          STATELINK_TEST_MYSQL_PASSWORD: statelink-ci-only
+        run: python3 tools/build.py --minecraft "$BASELINE" --mysql-only --output mysql-artifacts
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: mysql-qualified
+          path: mysql-artifacts/mysql-qualification.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Keep SQL test evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: mysql-test-evidence
+          path: |
+            mysql-artifacts/logs/
+            ${{ needs.inventory.outputs.baseline }}/build/test-results/mysqlTest/TEST-*.xml
+          if-no-files-found: warn
+          retention-days: 7
+
+  distribution:
+    needs: [inventory, minecraft, mysql]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: ${{ needs.inventory.outputs.max_java }}
+      - name: Download this run's successful target artifacts only
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          gh run download "$RUN_ID" --pattern 'jar-*' --dir incoming
+          gh run download "$RUN_ID" --name mysql-qualified --dir mysql-evidence
+      - name: Enforce the complete target set, source commit and test gate
+        env:
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: |
+          python3 tools/release.py assemble --input incoming --output release \
+            --mysql-qualification mysql-evidence/mysql-qualification.json \
+            --source-commit "$SOURCE_COMMIT" --require-clean --require-mysql
+          python3 tools/release.py verify --input release --source-commit "$SOURCE_COMMIT" --require-mysql
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: StateLink-${{ needs.inventory.outputs.version }}-verified
+          path: release/
+          if-no-files-found: error
+          retention-days: 30

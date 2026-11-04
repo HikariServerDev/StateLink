@@ -1,0 +1,56 @@
+import groovy.json.JsonSlurper
+import org.gradle.api.tasks.bundling.AbstractArchiveTask
+
+// Shared packaging/test policy only. Each project keeps its Minecraft API, mappings and Loom.
+def repositoryRoot = projectDir.parentFile
+def baseline = new JsonSlurper().parse(file("${repositoryRoot}/minecraft-versions.json")).regression_baseline
+def releaseProperties = new Properties()
+file("${repositoryRoot}/version.properties").withInputStream { releaseProperties.load(it) }
+if (project.version.toString() != releaseProperties.getProperty('mod_version')) {
+    throw new GradleException('Project version differs from version.properties')
+}
+
+tasks.withType(AbstractArchiveTask).configureEach {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+tasks.named('jar') {
+    from("${repositoryRoot}/LICENSE")
+    from("${repositoryRoot}/COPYING")
+    from("${repositoryRoot}/THIRD-PARTY-NOTICES.md")
+    from("${repositoryRoot}/licenses") { into 'META-INF/licenses' }
+}
+
+// The 29 API ports have one common, API-independent configuration suite.
+// Their historical copied 1.18.2 tests were never a qualified cross-version suite.
+if (projectDir.name != baseline) {
+    sourceSets.test.java.setSrcDirs(["${repositoryRoot}/tests/shared/java"])
+}
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    maxHeapSize = '512m'
+    maxParallelForks = 1
+    jvmArgs '-XX:ActiveProcessorCount=2'
+}
+tasks.named('test') {
+    exclude '**/*MySqlIntegrationTest*.class'
+}
+if (projectDir.name == baseline) {
+    tasks.register('mysqlTest', Test) {
+        description = 'Explicit real-MySQL regression suite; requires a disposable loopback test database.'
+        testClassesDirs = sourceSets.test.output.classesDirs
+        classpath = sourceSets.test.runtimeClasspath
+        include '**/*MySqlIntegrationTest.class'
+        mustRunAfter tasks.named('test')
+        doFirst {
+            def host = System.getenv('STATELINK_TEST_MYSQL_HOST')
+            def port = System.getenv('STATELINK_TEST_MYSQL_PORT')
+            def database = System.getenv('STATELINK_TEST_MYSQL_DATABASE')
+            def portNumber = port ==~ /[0-9]{1,5}/ ? Integer.parseInt(port) : -1
+            if (!(host in ['127.0.0.1', 'localhost']) || portNumber < 1024 || portNumber > 65535 ||
+                    portNumber == 3306 || !(database ==~ /statelink_test_[a-zA-Z0-9_]{1,50}/)) {
+                throw new GradleException('mysqlTest requires an explicit loopback non-3306 statelink_test_* database')
+            }
+        }
+    }
+}

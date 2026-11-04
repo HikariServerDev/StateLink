@@ -1,0 +1,62 @@
+name: StateLink Release
+
+# Verification never publishes automatically. Reuse one trusted-main successful run;
+# do not rebuild on tag push or silently replace an existing tag/release.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: New version tag (vMAJOR.MINOR.PATCH)
+        required: true
+        type: string
+      verification_run_id:
+        description: Successful StateLink Verify run on main
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: statelink-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'HikariServerDev/StateLink' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: ${{ inputs.tag }}
+      VERIFIED_RUN: ${{ inputs.verification_run_id }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - id: source
+        name: Reject failed, foreign, fork and PR verification runs
+        run: python3 tools/publish_release.py resolve --run-id "$VERIFIED_RUN" --tag "$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+      - name: Check out the exact verified source, not a later main revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ steps.source.outputs.source_commit }}
+          persist-credentials: false
+      - id: bundle
+        name: Download the already verified bundle (no duplicate build)
+        run: |
+          VERSION=$(python3 tools/project.py version)
+          test "$RELEASE_TAG" = "v$VERSION"
+          gh run download "$VERIFIED_RUN" --name "StateLink-$VERSION-verified" --dir release
+          echo "max_java=$(python3 tools/project.py max-java)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: ${{ steps.bundle.outputs.max_java }}
+      - name: Verify, create a new tag/draft, re-download assets, then publish
+        run: python3 tools/publish_release.py publish --run-id "$VERIFIED_RUN" --tag "$RELEASE_TAG" --input release
