@@ -11,6 +11,7 @@ version.properties        current Mod version (checked against every project)
 1.18.2/src/test/           primary unit, JDBC, migration and concurrency tests
 tests/shared/java/        API-independent configuration suite used by the other ports
 tests/tools/              archive, qualification and publication rejection tests
+tests/fixtures/legacy/    three immutable historical JAR inputs for real migration tests
 gradle/common.gradle      shared packaging and test policy; no Minecraft API unification
 tools/                    the same build/verify/publish entrypoints used in CI
 .github/workflows/        verification and separate manual publication
@@ -68,7 +69,10 @@ export STATELINK_TEST_MYSQL_PASSWORD='test-instance-only'
 python3 tools/build.py --minecraft 1.18.2 --mysql --output .verification/primary-full
 ```
 
-The primary source tests include a **schema-only**, data-free 2.1.11 migration fixture. The explicit
+The primary source tests include a **schema-only**, data-free 2.1.11 migration fixture.
+Three exact historical JARs in `tests/fixtures/legacy` are immutable test **inputs**, not generated
+build outputs or supported downloads. Their SHA-256/version/CRC are checked; they are never rebuilt,
+relabeled, packaged in StateLink, or uploaded as release assets. They preserve old metadata and licenses. The explicit
 `productionCopyRehearsal` helper is not executed by normal tests, CI or release publication.
 
 ### Distribution and GitHub Actions
@@ -96,7 +100,7 @@ If upload or verification fails, the draft/tag remain for investigation; the too
 overwrite history automatically.
 
 The release contains only 30 target JARs, `SHA256SUMS`, and `manifest.json`. GitHub's tag source archives
-provide the matching build/test source. Generated JARs, worlds, credentials, caches, logs and local reports
+provide the matching build/test source. Generated distribution JARs, worlds, credentials, caches, logs and local reports
 are not source-controlled. Old root-build downloads remain available in historical commits; new downloads
 use GitHub Releases.
 
@@ -124,6 +128,8 @@ is not fabricated. LGPL-3.0-only applies to StateLink; separately bundled librar
 版別の`src/main`・Loom・Gradle・Java・マッピングは独立させています。共通化したのは、ビルド／検査／配布手順とAPI非依存の設定テストです。回帰試験の基準は1.18.2、最新対応版は26.3です。対応版を増やす場合は、対象API・bytecode・Mixin契約を確認し、実装と`minecraft-versions.json`を同時に更新してください。
 
 IDEでは対象Minecraft版のフォルダをGradleプロジェクトとして開きます。今回、実際のIDE補完や全版のMinecraft動作確認を実施したという意味ではありません。API差を無視したStonecutter移行は行いません。
+
+`tests/fixtures/legacy`の過去版3 JARは移行試験に不可欠な固定入力です。現在のビルド出力とは区別し、元のハッシュ・版情報・ライセンスを変更せず保存します。Mod本体／Releaseには含めず、配布用にも使いません。
 
 `1.18.2/src/test`は既存の単体・JDBC・migration試験、`tests/shared/java`は他29版共通の設定テスト、`tests/tools`はビルド・成果物・公開処理の異常系テストです。過去にコピーされていた未検証テストと旧スクリプトは、ローカルの`staging-results/2026-11-04/2.4.2/migration`へハッシュ付きで退避しました。削除して失ったわけではありません。
 

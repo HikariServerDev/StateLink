@@ -18,7 +18,7 @@ import java.util.UUID;
  * a schema that 2.1.11 really created. Nothing here is produced by current code.
  */
 final class Legacy211Runtime implements AutoCloseable {
-    static final Path JAR = Path.of("../staging-results/2026-10-02/2.1.11/artifact/PlayerDataConnector-2.1.11.jar");
+    static final Path JAR = Path.of("../tests/fixtures/legacy/PlayerDataConnector-2.1.11.jar");
     static final String SHA256 = "1fc8a5017ed0c996776a988f1ac145ac49e803e182da083e77cfcd7c41830708";
     /** Constants 2.1.11 CompletePlayerDataSerializer wrote for domains it never implemented. */
     static final String ADVANCEMENTS = "{\"placeholder\":\"advancement_data_simplified\"}";

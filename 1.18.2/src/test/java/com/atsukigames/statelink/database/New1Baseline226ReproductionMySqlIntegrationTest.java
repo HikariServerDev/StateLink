@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * It documents the baseline defect; the fix is covered by Legacy211MigrationMySqlIntegrationTest.
  */
 class New1Baseline226ReproductionMySqlIntegrationTest {
-    private static final Path JAR_226 = Path.of("../staging-results/2026-10-05/2.2.6/artifact/PlayerDataConnector-2.2.6.jar");
+    private static final Path JAR_226 = Path.of("../tests/fixtures/legacy/PlayerDataConnector-2.2.6.jar");
     private static final String SHA_226 = "c444bdd157f1243d360c090c1108ea719e9410522b7a9cc7c487bd28e7c76d4a";
     private static final String PACKAGE = "com.atsukigames.playerdataconnector.";
 

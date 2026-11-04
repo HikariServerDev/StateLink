@@ -2,14 +2,33 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import subprocess
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 VERSION_PATTERN = re.compile(r"[0-9]+\.[0-9]+\.[0-9]+")
 TEST_MINIMUMS = {"primary-unit": 208, "configuration-only": 25, "mysql": 109}
+
+
+def check_legacy_fixtures(directory: Path) -> None:
+    manifest = json.loads((directory / "manifest.json").read_text())
+    artifacts = manifest["artifacts"]
+    expected = {f"PlayerDataConnector-{v}.jar" for v in ("2.1.11", "2.2.6", "2.2.9")}
+    if manifest.get("schema") != 1 or len(artifacts) != 3 or {a["filename"] for a in artifacts} != expected:
+        raise ValueError("legacy migration fixture set mismatch")
+    for item in artifacts:
+        path = directory / item["filename"]
+        if path.is_symlink() or path.stat().st_size != item["bytes"]:
+            raise ValueError("legacy migration fixture size/path mismatch")
+        if hashlib.sha256(path.read_bytes()).hexdigest() != item["sha256"]:
+            raise ValueError("legacy migration fixture SHA-256 mismatch")
+        with zipfile.ZipFile(path) as archive:
+            if archive.testzip() or json.loads(archive.read("fabric.mod.json"))["version"] != item["version"]:
+                raise ValueError("legacy migration fixture CRC/version mismatch")
 
 
 def load_project(root: Path = ROOT) -> tuple[str, list[dict]]:
@@ -34,6 +53,7 @@ def load_project(root: Path = ROOT) -> tuple[str, list[dict]]:
 
 
 def check_layout(root: Path = ROOT) -> None:
+    check_legacy_fixtures(root / "tests/fixtures/legacy")
     version, targets = load_project(root)
     expected = {target["minecraft"] for target in targets}
     actual = {p.name for p in root.iterdir() if p.is_dir() and (p / "build.gradle").is_file()}

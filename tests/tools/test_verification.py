@@ -1,5 +1,6 @@
 """Adversarial tests for the common release gate; no Minecraft, MySQL or network access."""
 import copy
+import hashlib
 import io
 import json
 import struct
@@ -208,6 +209,34 @@ class JarFixture(unittest.TestCase):
         log.unlink(); manifest = directory / "manifest.json"; actual = self.root / "manifest-real.json"
         manifest.rename(actual); manifest.symlink_to(actual)
         with self.assertRaises(ArtifactError): self.verify_bundle(directory)
+
+
+class LegacyFixtureTest(unittest.TestCase):
+    def test_immutable_inputs_reject_missing_corrupt_or_wrong_version(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            records = []
+            for version in ("2.1.11", "2.2.6", "2.2.9"):
+                path = directory / f"PlayerDataConnector-{version}.jar"
+                with zipfile.ZipFile(path, "w") as archive:
+                    archive.writestr("fabric.mod.json", json.dumps({"version": version}))
+                records.append({"version": version, "filename": path.name, "bytes": path.stat().st_size,
+                                "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
+            manifest = {"schema": 1, "artifacts": records}
+            (directory / "manifest.json").write_text(json.dumps(manifest))
+            project.check_legacy_fixtures(directory)
+            path = directory / records[0]["filename"]
+            original = path.read_bytes()
+            path.write_bytes(original[:-1])
+            with self.assertRaises(ValueError): project.check_legacy_fixtures(directory)
+            path.write_bytes(bytes([original[0] ^ 1]) + original[1:])
+            with self.assertRaises(ValueError): project.check_legacy_fixtures(directory)
+            path.write_bytes(original)
+            records[0]["version"] = "9.9.9"
+            (directory / "manifest.json").write_text(json.dumps(manifest))
+            with self.assertRaises(ValueError): project.check_legacy_fixtures(directory)
+            path.unlink()
+            with self.assertRaises(FileNotFoundError): project.check_legacy_fixtures(directory)
 
 
 class BuildSafetyTest(unittest.TestCase):

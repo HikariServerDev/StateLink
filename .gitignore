@@ -34,3 +34,6 @@ __pycache__/
 !**/gradle/wrapper/gradle-wrapper.jar
 /fabric-server-launcher.properties
 .DS_Store
+
+# Immutable migration test inputs; never newly generated distribution outputs.
+!/tests/fixtures/legacy/*.jar

@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @EnabledIfEnvironmentVariable(named = "STATELINK_TEST_MYSQL_DATABASE", matches = ".+")
 class PlayerDataConnector229InteropMySqlIntegrationTest {
-    private static final Path JAR_229 = Path.of("../staging-results/2026-10-05/2.2.9/artifact/PlayerDataConnector-2.2.9.jar");
+    private static final Path JAR_229 = Path.of("../tests/fixtures/legacy/PlayerDataConnector-2.2.9.jar");
     private static final String SHA_229 = "a1cd64393a391d3377b4427608f82852b00e633ee0d0a88f2ea0222b555d231a";
     private static final String LEGACY_PACKAGE = "com.atsukigames.playerdataconnector.";
     private static final String CURRENT_PACKAGE = "com.atsukigames.statelink.";

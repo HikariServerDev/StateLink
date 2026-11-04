@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "purpose": "Frozen database migration regression inputs; never deploy or rebuild these historical artifacts.",
+  "artifacts": [
+    {
+      "version": "2.1.11",
+      "filename": "PlayerDataConnector-2.1.11.jar",
+      "bytes": 2751333,
+      "sha256": "1fc8a5017ed0c996776a988f1ac145ac49e803e182da083e77cfcd7c41830708"
+    },
+    {
+      "version": "2.2.6",
+      "filename": "PlayerDataConnector-2.2.6.jar",
+      "bytes": 2833092,
+      "sha256": "c444bdd157f1243d360c090c1108ea719e9410522b7a9cc7c487bd28e7c76d4a"
+    },
+    {
+      "version": "2.2.9",
+      "filename": "PlayerDataConnector-2.2.9.jar",
+      "bytes": 2898231,
+      "sha256": "a1cd64393a391d3377b4427608f82852b00e633ee0d0a88f2ea0222b555d231a"
+    }
+  ]
+}
