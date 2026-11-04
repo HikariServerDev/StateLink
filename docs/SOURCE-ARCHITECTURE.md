@@ -62,7 +62,11 @@ projects and `implementation` in the existing official-name projects, matching t
 
 The IDE/default target, inventory baseline and CI baseline are all 1.18.2. Import the repository root;
 run `./gradlew prepareSources` first. For another target, use the same `minecraft_version` project
-property for its Gradle import. Python 3.10+ is required; `STATELINK_PYTHON` may select its executable.
+property for its Gradle import. IDEs that launch Gradle directly must also select the inventory's
+Gradle distribution and Gradle JVM: the standard root wrapper defaults to Gradle 8.5/Java 17,
+whereas the CLI dispatcher selects all three families automatically. Do not import 26.x using the
+baseline's Gradle 8.5. IDE import/completion on those configurations has not been executed.
+Python 3.10+ is required; `STATELINK_PYTHON` may select its executable.
 Actual IDE completion and Minecraft runtime injection are separate checks, not implied by CLI import.
 
 ## Hikari-Tweaks and Stonecutter
