@@ -16,6 +16,8 @@
 
 **Port scope / バージョン別の範囲:** 2.4.0 updates the version and recovery defaults in all 30 Minecraft ports while retaining each port's existing Minecraft-specific implementation. The full 2.3.x regression suite is maintained on 1.18.2; other ports are built and configuration-tested, not claimed to have identical runtime qualification or every 1.18.2-specific improvement. 全30版でバージョンと復旧初期値を更新しますが、各版の既存実装を維持します。1.18.2以外へ2.3.xの全改善を移植したという意味ではなく、全版の実Minecraft動作確認済みという意味でもありません。
 
+**Source structure / ソース構成:** All 30 targets now use one shared `src/`, with class-level compatibility variants, one root Gradle entrypoint and the existing per-target toolchains. See [Source architecture](docs/SOURCE-ARCHITECTURE.md) and [Development](docs/DEVELOPMENT.md). 全30版のソースを単一の`src/`へ集約しました。版固有の実装・データ形式・機能は維持し、ルートの`./gradlew -Pminecraft_version=<版>`からビルドします。構造変更版を既存の固定2.4.2 artifactへ上書き公開することはありません。
+
 ---
 
 ## English

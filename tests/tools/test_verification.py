@@ -27,13 +27,13 @@ class JarFixture(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         self.target = {"minecraft": "1.18.2", "java": 17, "loader": "0.17.3", "fabric_api": "test-api",
-                       "mappings": "test-yarn", "refmap": True, "primary": True}
+                       "mappings": "test-yarn", "refmap": True, "primary": True, "metadata": {}}
         self.version = "2.4.2"
         version_reader = mock.patch.object(verify_artifacts, "read_version_constant", return_value=self.version)
         version_reader.start(); self.addCleanup(version_reader.stop)
         (self.root / "LICENSE").write_text("fixture LGPL license\n")
         (self.root / "COPYING").write_text("fixture GPL reference\n")
-        resource = self.root / "1.18.2/src/main/resources"
+        resource = self.root / "src/main/resources"
         resource.mkdir(parents=True)
         self.mixins = {"required": True, "package": "com.atsukigames.statelink.mixin",
                        "compatibilityLevel": "JAVA_17", "server": ["ExampleMixin"]}
@@ -46,6 +46,7 @@ class JarFixture(unittest.TestCase):
                          "mixins": ["statelink.mixins.json"],
                          "jars": [{"file": f"META-INF/jars/{name}"} for name in sorted(EXPECTED_LIBRARIES)]}
         (resource / "fabric.mod.json").write_text(json.dumps(self.metadata))
+        (self.root / "source-layout.json").write_text(json.dumps({"schema": 1, "common_java": "src/main/java", "variants": [], "mixins": [{"source": "src/main/resources/statelink.mixins.json", "targets": ["1.18.2"]}]}))
         self.entries = {"LICENSE": (self.root / "LICENSE").read_bytes(), "COPYING": (self.root / "COPYING").read_bytes(),
                         "assets/statelink/icon.png": b"fixture-image",
                         "fabric.mod.json": json.dumps(self.metadata).encode(),
@@ -60,7 +61,7 @@ class JarFixture(unittest.TestCase):
         for name in ("StateLink", "mixin/ExampleMixin"):
             entry = "com/atsukigames/statelink/" + name
             self.entries[entry + ".class"] = b"\xca\xfe\xba\xbe\x00\x00\x00\x3d"
-            source = self.root / "1.18.2/src/main/java" / (entry + ".java")
+            source = self.root / "src/main/java" / (entry + ".java")
             source.parent.mkdir(parents=True, exist_ok=True)
             source.write_text("// fixture source\n")
         for name in EXPECTED_LIBRARIES:

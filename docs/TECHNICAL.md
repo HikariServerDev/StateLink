@@ -507,3 +507,10 @@ PDC_TEST_MYSQL_PASSWORD='...' \
 ## 限界
 
 MySQLとMinecraft Worldは同一transactionではなく、exactly-once journalはありません。manual/safeは不確定stateを止めますが、automaticは承認済みcheckpoint復旧によるWorld側dupe/loss/rollbackを許容します。DB authority排他、fence、transaction atomicityは全modeで維持します。local World/vanilla file、独立writer、未知Mod GUIの完全保全は保証しません。mixed writerは禁止し、item-domain再ONやunsafe recoveryにはoperatorのreconciliationが必要です。
+
+
+## Shared-source development
+
+Current paths and target selection are documented in [SOURCE-ARCHITECTURE.md](SOURCE-ARCHITECTURE.md).
+Run Gradle from the repository root; the default target is 1.18.2. Use `-Pminecraft_version=<target>`
+for another target. Real MySQL tests use the explicit guarded `mysqlTest` task.

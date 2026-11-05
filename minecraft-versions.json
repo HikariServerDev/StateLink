@@ -10,7 +10,13 @@
       "loom": "1.2.8",
       "gradle": "8.5",
       "mappings": "1.18+build.1",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "1.18",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.18.1",
@@ -20,7 +26,13 @@
       "loom": "1.2.8",
       "gradle": "8.5",
       "mappings": "1.18.1+build.22",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "1.18.1",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.18.2",
@@ -30,7 +42,17 @@
       "loom": "1.2.8",
       "gradle": "8.5",
       "mappings": "1.18.2+build.4",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "~1.18.2",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": ">=0.77.0"
+      },
+      "wrapper_options": {
+        "networkTimeout": "10000",
+        "validateDistributionUrl": "true"
+      }
     },
     {
       "minecraft": "1.19",
@@ -40,7 +62,13 @@
       "loom": "1.7.4",
       "gradle": "8.8",
       "mappings": "1.19+build.4",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "1.19",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.19.1",
@@ -50,7 +78,13 @@
       "loom": "1.7.4",
       "gradle": "8.8",
       "mappings": "1.19.1+build.6",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "1.19.1",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.19.2",
@@ -60,7 +94,13 @@
       "loom": "1.7.4",
       "gradle": "8.8",
       "mappings": "1.19.2+build.28",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "1.19.2",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.19.3",
@@ -70,7 +110,13 @@
       "loom": "1.7.4",
       "gradle": "8.8",
       "mappings": "1.19.3+build.5",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "1.19.3",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.19.4",
@@ -80,7 +126,13 @@
       "loom": "1.7.4",
       "gradle": "8.8",
       "mappings": "1.19.4+build.2",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "1.19.4",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.20",
@@ -90,7 +142,13 @@
       "loom": "1.7.4",
       "gradle": "8.8",
       "mappings": "1.20+build.1",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "1.20",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.20.1",
@@ -100,7 +158,13 @@
       "loom": "1.7.4",
       "gradle": "8.8",
       "mappings": "1.20.1+build.10",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "1.20.1",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.20.2",
@@ -110,7 +174,13 @@
       "loom": "1.7.4",
       "gradle": "8.8",
       "mappings": "1.20.2+build.4",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "1.20.2",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.20.3",
@@ -120,7 +190,13 @@
       "loom": "1.7.4",
       "gradle": "8.8",
       "mappings": "1.20.3+build.1",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "1.20.3",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.20.4",
@@ -130,7 +206,13 @@
       "loom": "1.7.4",
       "gradle": "8.8",
       "mappings": "1.20.4+build.3",
-      "refmap": true
+      "refmap": true,
+      "metadata": {
+        "minecraft_dependency": "1.20.4",
+        "java_dependency": ">=17",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.20.5",
@@ -140,7 +222,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.20.5+build.1",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.20.5",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.20.6",
@@ -150,7 +238,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.20.6+build.3",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.20.6",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.21",
@@ -160,7 +254,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.21+build.9",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.21",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.21.1",
@@ -170,7 +270,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.21.1+build.3",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.21.1",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.21.2",
@@ -180,7 +286,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.21.2+build.1",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.21.2",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.21.3",
@@ -190,7 +302,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.21.3+build.2",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.21.3",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.21.4",
@@ -200,7 +318,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.21.4+build.8",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.21.4",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.21.5",
@@ -210,7 +334,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.21.5+build.1",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.21.5",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.21.6",
@@ -220,7 +350,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.21.6+build.1",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.21.6",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.21.7",
@@ -230,7 +366,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.21.7+build.8",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.21.7",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.21.8",
@@ -240,7 +382,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.21.8+build.1",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.21.8",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.21.9",
@@ -250,7 +398,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.21.9+build.1",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.21.9",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.21.10",
@@ -260,7 +414,13 @@
       "loom": "1.14.10",
       "gradle": "9.7.1",
       "mappings": "1.21.10+build.3",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.21.10",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "1.21.11",
@@ -270,7 +430,13 @@
       "loom": "1.16.3",
       "gradle": "9.7.1",
       "mappings": "1.21.11+build.6",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "1.21.11",
+        "java_dependency": ">=21",
+        "loader_dependency": ">=0.17.3",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "26.1",
@@ -280,7 +446,13 @@
       "loom": "1.18-SNAPSHOT",
       "gradle": "9.7.1",
       "mappings": "mojang-official",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "26.1",
+        "java_dependency": ">=25",
+        "loader_dependency": ">=0.19.5",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "26.2",
@@ -290,7 +462,13 @@
       "loom": "1.18-SNAPSHOT",
       "gradle": "9.7.1",
       "mappings": "mojang-official",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "26.2",
+        "java_dependency": ">=25",
+        "loader_dependency": ">=0.19.5",
+        "fabric_api_dependency": "*"
+      }
     },
     {
       "minecraft": "26.3",
@@ -300,7 +478,13 @@
       "loom": "1.18-SNAPSHOT",
       "gradle": "9.7.1",
       "mappings": "mojang-official",
-      "refmap": false
+      "refmap": false,
+      "metadata": {
+        "minecraft_dependency": "26.3",
+        "java_dependency": ">=25",
+        "loader_dependency": ">=0.19.5",
+        "fabric_api_dependency": "*"
+      }
     }
   ]
 }

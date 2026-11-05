@@ -82,7 +82,7 @@ jobs:
           path: |
             artifacts/logs/
             artifacts/build-results.json
-            ${{ matrix.minecraft }}/build/test-results/test/TEST-*.xml
+            build/targets/${{ matrix.minecraft }}/test-results/test/TEST-*.xml
           if-no-files-found: warn
           retention-days: 7
 
@@ -144,7 +144,7 @@ jobs:
           name: mysql-test-evidence
           path: |
             mysql-artifacts/logs/
-            ${{ needs.inventory.outputs.baseline }}/build/test-results/mysqlTest/TEST-*.xml
+            build/targets/${{ needs.inventory.outputs.baseline }}/test-results/mysqlTest/TEST-*.xml
           if-no-files-found: warn
           retention-days: 7
 

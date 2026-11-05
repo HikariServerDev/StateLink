@@ -1,0 +1,21 @@
+import groovy.json.JsonSlurper
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven { url 'https://maven.fabricmc.net/' }
+    }
+}
+
+// One root entrypoint, retaining independent project/Loom caches and toolchains per target.
+def inventory = new JsonSlurper().parse(new File(settingsDir, 'minecraft-versions.json'))
+def selected = providers.gradleProperty('minecraft_version').orElse(inventory.regression_baseline).get()
+def target = inventory.targets.find { it.minecraft == selected }
+if (target == null) throw new GradleException('Unsupported Minecraft target')
+def python = System.getenv('STATELINK_PYTHON') ?: (System.getProperty('os.name').startsWith('Windows') ? 'python' : 'python3')
+providers.exec {
+    commandLine python, new File(settingsDir, 'tools/prepare_sources.py'), '--minecraft', selected
+    workingDir settingsDir
+}.result.get().assertNormalExitValue()
+rootProject.name = 'StateLink'
+rootProject.projectDir = new File(settingsDir, ".gradle/statelink/targets/${selected}")
