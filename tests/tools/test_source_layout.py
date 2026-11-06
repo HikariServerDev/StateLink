@@ -79,6 +79,29 @@ class SharedSourcesTest(unittest.TestCase):
             with self.assertRaises(ValueError):sources.prepare(root,{'minecraft':'1.18.2','loom':'1.2.8','mappings':'yarn'})
 
 
+class LicenseLayoutTest(unittest.TestCase):
+    def test_only_lgpl_is_a_root_license_candidate(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'LICENSE').write_text('GNU LESSER GENERAL PUBLIC LICENSE\n')
+            reference = root / 'docs/GPL-3.0-LGPLv3-reference.txt'
+            reference.parent.mkdir(parents=True)
+            reference.write_text('GNU GENERAL PUBLIC LICENSE\n')
+
+            project.check_license_layout(root)
+
+            (root / 'COPYING').write_text('GNU GENERAL PUBLIC LICENSE\n')
+            with self.assertRaisesRegex(ValueError, 'out of the repository root'):
+                project.check_license_layout(root)
+
+    def test_missing_gpl_reference_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'LICENSE').write_text('GNU LESSER GENERAL PUBLIC LICENSE\n')
+            with self.assertRaisesRegex(ValueError, 'reference text is missing'):
+                project.check_license_layout(root)
+
+
 class ArchiveEquivalenceTest(unittest.TestCase):
     @staticmethod
     def jar(entries):

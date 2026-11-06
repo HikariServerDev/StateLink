@@ -19,7 +19,8 @@ MAX_EXPANDED_BYTES = 64 * 1024 * 1024
 EXPECTED_LIBRARIES = {"HikariCP-5.0.1.jar", "mysql-connector-j-8.0.33.jar", "slf4j-api-1.7.36.jar"}
 OWN_PACKAGE = "com/atsukigames/statelink/"
 LICENSE_RESOURCES = {
-    "LICENSE": "LICENSE", "COPYING": "COPYING", "THIRD-PARTY-NOTICES.md": "THIRD-PARTY-NOTICES.md",
+    "LICENSE": "LICENSE", "COPYING": "docs/GPL-3.0-LGPLv3-reference.txt",
+    "THIRD-PARTY-NOTICES.md": "THIRD-PARTY-NOTICES.md",
     "META-INF/licenses/HikariCP-5.0.1.txt": "licenses/HikariCP-5.0.1.txt",
     "META-INF/licenses/slf4j-api-1.7.36.txt": "licenses/slf4j-api-1.7.36.txt",
 }

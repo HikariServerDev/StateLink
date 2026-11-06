@@ -106,7 +106,7 @@ use GitHub Releases.
 ### Inspection boundaries and remaining risks
 
 The archive gate reads all ZIP entries and checks CRC, including nested runtime JARs. It checks exact
-target/version/Java/Loader metadata, both license texts, declared libraries, Mixin configuration/class/refmap
+target/version/Java/Loader metadata, the LGPL and its GPLv3 reference text, declared libraries, Mixin configuration/class/refmap
 presence and shape, own-class Java headers, the compiled main VERSION constant, production-source correspondence, and test/private payload exclusion.
 Adversarial tests cover corrupt/truncated/duplicate/unsafe-path archives, wrong targets, stale qualification,
 invented runtime PASS, bad provenance, existing releases, and failed post-upload verification.

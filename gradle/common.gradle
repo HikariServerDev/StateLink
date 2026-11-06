@@ -16,7 +16,9 @@ tasks.withType(AbstractArchiveTask).configureEach {
 }
 tasks.named('jar') {
     from("${repositoryRoot}/LICENSE")
-    from("${repositoryRoot}/COPYING")
+    from("${repositoryRoot}/docs/GPL-3.0-LGPLv3-reference.txt") {
+        rename { "COPYING" }
+    }
     from("${repositoryRoot}/THIRD-PARTY-NOTICES.md")
     from("${repositoryRoot}/licenses") { into 'META-INF/licenses' }
 }
