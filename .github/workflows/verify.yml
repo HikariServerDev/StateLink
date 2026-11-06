@@ -100,7 +100,7 @@ jobs:
         ports:
           - 33306:3306
         options: >-
-          --health-cmd="mysqladmin ping -pstatelink-ci-only"
+          --health-cmd="mysqladmin --protocol=TCP --host=127.0.0.1 --port=3306 ping -pstatelink-ci-only"
           --health-interval=5s
           --health-timeout=5s
           --health-retries=24
@@ -120,7 +120,8 @@ jobs:
           MYSQL_CONTAINER: ${{ job.services.mysql.id }}
           CI_TEST_PASSWORD: statelink-ci-only
         run: |
-          docker exec -e MYSQL_PWD="$CI_TEST_PASSWORD" "$MYSQL_CONTAINER" mysql -uroot -e \
+          docker exec -e MYSQL_PWD="$CI_TEST_PASSWORD" "$MYSQL_CONTAINER" mysql \
+            --protocol=TCP --host=127.0.0.1 --port=3306 -uroot -e \
             'SET GLOBAL innodb_buffer_pool_size=268435456; SET GLOBAL innodb_redo_log_capacity=268435456; SELECT VERSION();'
       - name: Run the real-MySQL suite (never the production port/database)
         env:
