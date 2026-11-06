@@ -204,7 +204,7 @@ If the file is missing or broken, the server refuses to start instead of guessin
 
 ### Development, verification and license
 
-See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for the actual directory layout, common local/CI commands, isolated MySQL rules, release gates and verification limits. StateLink is licensed under [LGPL-3.0-only](LICENSE); [COPYING](COPYING) contains its referenced GPL text. Bundled libraries retain their original terms.
+See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for the actual directory layout, common local/CI commands, isolated MySQL rules, release gates and verification limits. StateLink is licensed under [LGPL-3.0-only](LICENSE); the GPLv3 reference text is kept in [docs/GPL-3.0-LGPLv3-reference.txt](docs/GPL-3.0-LGPLv3-reference.txt) and packaged in JARs as `COPYING`. Bundled libraries retain their original terms.
 
 ## 日本語
 
@@ -388,4 +388,4 @@ dirty-only保存では、変更のないプレイヤーのPlayerData行を書き
 
 ### 開発・検証・ライセンス
 
-実際のディレクトリ構成、ローカル／CI共通コマンド、隔離MySQL、公開条件、未検証範囲は[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)にまとめています。StateLinkのライセンスは[LGPL-3.0-only](LICENSE)です。参照されるGPL本文は[COPYING](COPYING)に収録し、別途同梱するライブラリのライセンスは変更しません。
+実際のディレクトリ構成、ローカル／CI共通コマンド、隔離MySQL、公開条件、未検証範囲は[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)にまとめています。StateLinkのライセンスは[LGPL-3.0-only](LICENSE)です。参照用のGPLv3本文は[docs/GPL-3.0-LGPLv3-reference.txt](docs/GPL-3.0-LGPLv3-reference.txt)に保管し、JAR内では従来どおり`COPYING`として同梱します。別途同梱するライブラリのライセンスは変更しません。

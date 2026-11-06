@@ -32,7 +32,6 @@ class JarFixture(unittest.TestCase):
         version_reader = mock.patch.object(verify_artifacts, "read_version_constant", return_value=self.version)
         version_reader.start(); self.addCleanup(version_reader.stop)
         (self.root / "LICENSE").write_text("fixture LGPL license\n")
-        (self.root / "COPYING").write_text("fixture GPL reference\n")
         resource = self.root / "src/main/resources"
         resource.mkdir(parents=True)
         self.mixins = {"required": True, "package": "com.atsukigames.statelink.mixin",
@@ -47,8 +46,7 @@ class JarFixture(unittest.TestCase):
                          "jars": [{"file": f"META-INF/jars/{name}"} for name in sorted(EXPECTED_LIBRARIES)]}
         (resource / "fabric.mod.json").write_text(json.dumps(self.metadata))
         (self.root / "source-layout.json").write_text(json.dumps({"schema": 1, "common_java": "src/main/java", "variants": [], "mixins": [{"source": "src/main/resources/statelink.mixins.json", "targets": ["1.18.2"]}]}))
-        self.entries = {"LICENSE": (self.root / "LICENSE").read_bytes(), "COPYING": (self.root / "COPYING").read_bytes(),
-                        "assets/statelink/icon.png": b"fixture-image",
+        self.entries = {"assets/statelink/icon.png": b"fixture-image",
                         "fabric.mod.json": json.dumps(self.metadata).encode(),
                         "statelink.mixins.json": json.dumps({**self.mixins, "refmap": "StateLink-refmap.json"}).encode(),
                         "StateLink-refmap.json": b'{"mappings":{"example":{"a":"b"}}}'}

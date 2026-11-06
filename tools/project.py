@@ -60,9 +60,21 @@ def load_project(root: Path = ROOT) -> tuple[str, list[dict]]:
     return values[0], targets
 
 
+def check_license_layout(root: Path = ROOT) -> None:
+    license_file = root / 'LICENSE'
+    gpl_reference = root / 'docs/GPL-3.0-LGPLv3-reference.txt'
+    if license_file.is_symlink() or not license_file.is_file():
+        raise ValueError('the root LICENSE file must be present and regular')
+    if (root / 'COPYING').exists() or (root / 'COPYING').is_symlink():
+        raise ValueError('move the LGPLv3 GPL reference out of the repository root')
+    if gpl_reference.is_symlink() or not gpl_reference.is_file():
+        raise ValueError('the LGPLv3 GPL reference text is missing')
+
+
 def check_layout(root: Path = ROOT) -> None:
     check_legacy_fixtures(root / 'tests/fixtures/legacy')
     version, targets = load_project(root)
+    check_license_layout(root)
     check_sources(root, targets)
     if any((root / t['minecraft'] / 'src').exists() for t in targets):
         raise ValueError('maintained per-version source trees must not coexist with shared sources')
