@@ -6,9 +6,9 @@
 
 **ダウンロード:** [GitHub Releases](https://github.com/HikariServerDev/StateLink/releases)から対象Minecraft版のJARを取得してください。2.4.2以降は生成JARをGitの`build/`に登録せず、Releaseに版別JAR・`SHA256SUMS`・`manifest.json`をまとめます。ライセンスは**LGPL-3.0-only**に統一し、必要なライセンス文書をJARへ同梱します。ビルド・CI・成果物検査の成功は、実Minecraftや本番でのログイン成功を意味しません。
 
-**2.4.1 login fix:** scoreboard/team prefixes and suffixes are local presentation, not profile identity. A different stored display label no longer rejects a login. UUID, account-name and profile-property validation remain enforced; no scoreboard or login identity is renamed.
+**2.4.3 login fix:** When a stored profile has the same UUID and an older account name, StateLink keeps the current login profile and loads the other synchronized data normally. Stored profiles for a different UUID and invalid profile data still block synchronization.
 
-**2.4.1のログイン修正:** チームのprefix/suffixなどの表示名はサーバーごとの装飾として扱い、保存時と異なっていても接続を拒否しません。UUID・アカウント名・プロフィール内容の検証は維持します。ログインIDやscoreboardは変更しません。
+**2.4.3のログイン修正:** 保存済みプロフィールのUUIDが同じでアカウント名が異なる場合、現在のログインプロフィールを保持し、ほかの同期データを通常どおり読み込みます。UUIDが異なる場合や、プロフィールデータが不正な場合は同期を拒否します。
 
 **2.4.0 recovery default:** `last_checkpoint`, enabled, with a 5-second delay and `acknowledgeUnsafeRecovery=true`. This automatically adopts the last committed DB checkpoint without a per-player command or freshness requirement. Progress may roll back and externalized World/container items may be duplicated or lost. It is **not safe/exactly-once recovery**. Explicit existing modes and acknowledgement values are preserved, not rewritten. Choose `safe`/`manual` if you do not accept this trade-off. Live-owner, fencing and domain-provenance protections remain; missing player data is not invented.
 
@@ -155,7 +155,7 @@ The server rejects timing combinations that cannot fit a bounded renewal attempt
 | `syncOnDimensionChange` | `true` — Triggers synchronization on dimension change; it does not enable the `dimension` data domain. |
 | `gamemode` | Game mode and flying state. |
 | `advancements`, `statistics`, `recipeBook` | Advancements, statistics and the recipe book. |
-| `playerProfile` | Skin and profile properties. Login UUID/name remain validated; backend-local team/display labels are not applied or compared. |
+| `playerProfile` | Skin and profile properties. A different stored UUID is rejected. When the account name differs, the current login properties are kept. Team and display labels remain local. |
 
 Use the **same** values on every server.
 
@@ -341,7 +341,7 @@ serverは、boundedなlease更新と新規接続によるownership再確認がle
 | `syncOnDimensionChange` | `true` — dimension変更時に同期処理を開始します。`dimension` domain自体を有効にする設定ではありません。 |
 | `gamemode` | ゲームモードと飛行状態。 |
 | `advancements`、`statistics`、`recipeBook` | 進捗、統計、レシピブック。 |
-| `playerProfile` | スキンなどのプロフィールproperties。UUID・アカウント名を検証し、サーバーごとのチーム装飾・表示名は適用や一致判定の対象にしません。 |
+| `playerProfile` | スキンなどのプロフィール情報。保存済みUUIDが異なる場合は同期を拒否します。アカウント名が異なる場合は現在のログイン情報を保持します。チーム装飾や表示名はサーバーごとに管理されます。 |
 
 すべてのサーバーで**同じ値**にしてください。
 

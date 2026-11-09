@@ -34,7 +34,7 @@ import java.nio.file.Path;
  */
 public final class StateLink implements ModInitializer {
     public static final String MOD_ID = "statelink";
-    public static final String VERSION = "2.4.2";
+    public static final String VERSION = "2.4.3";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     private static volatile StateLink activeInstance;
 

@@ -56,8 +56,13 @@ public final class PlayerProfileCodec {
             }
             return null;
         }
-        if (!uuid.toString().equals(root.get("uuid").getAsString()) || !name.equals(root.get("name").getAsString())) {
-            throw new IllegalArgumentException("Profile login identity mismatch; automatic rename is unsupported");
+        if (!uuid.toString().equals(root.get("uuid").getAsString())) {
+            throw new IllegalArgumentException("Stored profile UUID does not match login UUID");
+        }
+        var savedName = root.get("name");
+        if (savedName == null || !savedName.isJsonPrimitive() || !savedName.getAsJsonPrimitive().isString()
+                || savedName.getAsString().isBlank()) {
+            throw new IllegalArgumentException("Invalid stored profile name");
         }
         if (root.get("format").getAsBigDecimal().intValueExact() != 1 || !root.get("properties").isJsonArray()) {
             throw new IllegalArgumentException("Invalid profile format");
@@ -72,6 +77,9 @@ public final class PlayerProfileCodec {
                 ? new Property(propertyName, value, property.get("signature").getAsString())
                 : new Property(propertyName, value));
         }
+        // A name change within the same UUID keeps the current login properties.
+        // Validate the whole stored payload first so a rename cannot hide corrupt data.
+        if (!name.equals(savedName.getAsString())) return null;
         return result;
     }
     private static boolean legacyIdentityShape(JsonObject root) {
@@ -92,9 +100,8 @@ public final class PlayerProfileCodec {
     public static PropertyMap prepare(ServerPlayerEntity player, String json) {
         onServerThread(player);
         // Team prefixes/suffixes are backend-local presentation, not login identity.
-        // Keep UUID, account-name and full property validation in decode().
         PropertyMap result = decode(json, player.getUuid(), player.getGameProfile().getName());
-        if (result == null) StateLink.LOGGER.warn("Legacy identity-only profile: preserving local properties until real checkpoint");
+        if (result == null) StateLink.LOGGER.debug("Keeping current login properties for UUID={}", player.getUuid());
         return result;
     }
     public static void apply(ServerPlayerEntity player, PropertyMap prepared) {

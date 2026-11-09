@@ -14,15 +14,20 @@ import gradle_runner
 
 
 class SharedSourcesTest(unittest.TestCase):
-    def test_every_original_class_and_absence_is_preserved_for_all_thirty_targets(self):
+    def test_original_class_selection_is_preserved_for_all_thirty_targets(self):
         golden = json.loads((project.ROOT / 'tests/fixtures/migration/2.4.2-source-manifest.json').read_text())
-        _, targets = project.load_project()
+        version, targets = project.load_project()
         self.assertEqual({t['minecraft'] for t in targets}, set(golden['targets']))
         for target in targets:
             mc = target['minecraft']
             selected = sources.java_sources(project.ROOT, mc)
-            actual = {p: hashlib.sha256(f.read_bytes()).hexdigest() for p,f in selected.items()}
-            self.assertEqual(golden['targets'][mc]['java'], actual, mc)
+            expected = golden['targets'][mc]['java']
+            self.assertEqual(set(expected), set(selected), mc)
+            # Byte equivalence applies to the 2.4.2 migration itself, before later fixes.
+            if version == '2.4.2':
+                actual = {path: hashlib.sha256(file.read_bytes()).hexdigest()
+                          for path, file in selected.items()}
+                self.assertEqual(expected, actual, mc)
 
     def test_every_original_resource_is_preserved_including_dependency_constraints(self):
         golden = json.loads((project.ROOT / 'tests/fixtures/migration/2.4.2-source-manifest.json').read_text())
