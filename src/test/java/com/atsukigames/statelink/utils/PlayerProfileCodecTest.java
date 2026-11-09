@@ -38,13 +38,19 @@ class PlayerProfileCodecTest {
         assertFalse(PlayerProfileCodec.isLegacyIdentityPlaceholder("{\"name\":1,\"uuid\":\"b\"}"));
         assertFalse(PlayerProfileCodec.isLegacyIdentityPlaceholder(null));
         assertFalse(PlayerProfileCodec.isLegacyIdentityPlaceholder("not json"));
-        // The existing contract for real 2.2.x profile data is unchanged: a different name is refused.
-        assertThrows(IllegalArgumentException.class, () -> PlayerProfileCodec.decode(real, ID, "Renamed"));
     }
-    @Test void identityMismatchCannotRenameTheLoginPlayer() {
+    @Test void sameUuidWithChangedAccountNamePreservesCurrentLoginProperties() {
+        var saved = new GameProfile(ID, "OldName");
+        saved.getProperties().put("textures", new Property("textures", "old-value", "old-signature"));
+        String json = PlayerProfileCodec.encode(saved);
+        assertNull(PlayerProfileCodec.decode(json, ID, "NewName"));
+        assertNull(PlayerProfileCodec.decode(json, ID, "oldname"));
+        assertEquals(1, PlayerProfileCodec.decode(json, ID, "OldName").size());
+    }
+    @Test void uuidMismatchIsRejectedRegardlessOfAccountName() {
         var json = PlayerProfileCodec.encode(new GameProfile(ID, "ProfileTest"));
         assertThrows(IllegalArgumentException.class, () -> PlayerProfileCodec.decode(json, UUID.randomUUID(), "ProfileTest"));
-        assertThrows(IllegalArgumentException.class, () -> PlayerProfileCodec.decode(json, ID, "OtherName"));
+        assertThrows(IllegalArgumentException.class, () -> PlayerProfileCodec.decode(json, UUID.randomUUID(), "OtherName"));
     }
     @Test void legacyIdentityOnlyRowPreservesLocalProperties() {
         assertNull(PlayerProfileCodec.decode("{\"uuid\":\""+ID+"\",\"name\":\"ProfileTest\"}", ID, "ProfileTest"));
@@ -52,5 +58,6 @@ class PlayerProfileCodecTest {
     @Test void invalidFormatFailsWholeProfile() {
         var json = PlayerProfileCodec.encode(new GameProfile(ID, "ProfileTest")).replace("\"format\":1", "\"format\":1.5");
         assertThrows(ArithmeticException.class, () -> PlayerProfileCodec.decode(json, ID, "ProfileTest"));
+        assertThrows(ArithmeticException.class, () -> PlayerProfileCodec.decode(json, ID, "Renamed"));
     }
 }
