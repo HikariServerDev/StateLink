@@ -16,6 +16,39 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PlayerSessionContextTest {
     @Test
+    void joinCanWaitForAutomaticRecoveryBeyondTheNormalTimeout() {
+        PlayerSessionContext context = new PlayerSessionContext(UUID.randomUUID(), null, 1L);
+        long start = context.joinStartedNanos();
+        long normalTimeoutMs = 15_000;
+
+        assertEquals(0, context.remainingJoinNanos(start + TimeUnit.SECONDS.toNanos(15), normalTimeoutMs));
+        assertTrue(context.extendJoinForRecovery(start + TimeUnit.SECONDS.toNanos(5), normalTimeoutMs, 120));
+        assertEquals(TimeUnit.SECONDS.toNanos(105),
+            context.remainingJoinNanos(start + TimeUnit.SECONDS.toNanos(15), normalTimeoutMs));
+        // Lease expiry plus the recovery delay can take 20 seconds. An old watchdog at 15s must not close it.
+        long recoveredAt = start + TimeUnit.SECONDS.toNanos(20);
+        assertTrue(context.remainingJoinNanos(recoveredAt, normalTimeoutMs) > 0);
+        assertFalse(context.canQueueNormalSave());
+        assertFalse(context.markReadyIfSafe(true, true, false, recoveredAt, TimeUnit.SECONDS.toNanos(3)));
+        context.markOwnership(2L, 1L, recoveredAt);
+        assertTrue(context.markReadyIfSafe(true, true, false, recoveredAt, TimeUnit.SECONDS.toNanos(3)));
+    }
+
+    @Test
+    void recoveryDeferralsDoNotSlideDeadlineOrReviveAnExpiredJoin() {
+        PlayerSessionContext expired = new PlayerSessionContext(UUID.randomUUID(), null, 1L);
+        assertFalse(expired.extendJoinForRecovery(expired.joinStartedNanos() + TimeUnit.SECONDS.toNanos(15),
+            15_000, 120));
+
+        PlayerSessionContext context = new PlayerSessionContext(UUID.randomUUID(), null, 1L);
+        long start = context.joinStartedNanos();
+        assertFalse(context.extendJoinForRecovery(start, 15_000, 10));
+        assertTrue(context.extendJoinForRecovery(start, 15_000, 120));
+        assertFalse(context.extendJoinForRecovery(start + TimeUnit.SECONDS.toNanos(115), 15_000, 120));
+        assertEquals(0, context.remainingJoinNanos(start + TimeUnit.SECONDS.toNanos(120), 15_000));
+    }
+
+    @Test
     void atMostOnePeriodicCheckpointMayBeQueuedWithoutHavingStarted() {
         PlayerSessionContext context = new PlayerSessionContext(UUID.randomUUID(), null, 1L);
         assertTrue(context.tryReservePeriodicSave());

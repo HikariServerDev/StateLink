@@ -205,7 +205,7 @@ JOIN時に固定時間sleepは行いません。UUIDごとに次の順で処理�
 | recovery.maxCheckpointAgeSeconds | int | 30 | 最大checkpoint age。超過はWARN・保留 |
 | recovery.maxAutoRecoveryAttempts | int | 12 | automaticのDB durable試行上限。restart/loginでresetしない |
 | recovery.acknowledgePotentialRollbackOrDuplication | boolean | false | automatic危険承認。未承認はstartup拒否 |
-| recovery.maxWaitSeconds | int | 120 | safe proof待機上限。超過してもunsafeへ切り替えない |
+| recovery.maxWaitSeconds | int | 120 | `safe`の証明受付期限。`automatic`・`last_checkpoint`で復旧待ちに入ったログインは、通常のJOIN期限とこの値の長いほうを使う。起点はログイン開始時刻 |
 | recovery.lastCheckpointDelaySeconds | int | 5 | unsafe modeの最短待機時間。安全の証明ではない |
 | recovery.acknowledgeUnsafeRecovery | boolean | true | 2.4.0から危険を許容する初期値。明示falseなら同modeのstartup拒否 |
 | security.enableWhitelist / requireSameIP / encryptSensitiveData | boolean | 各false | 旧互換設定。現同期基盤での追加強制処理は未実装 |

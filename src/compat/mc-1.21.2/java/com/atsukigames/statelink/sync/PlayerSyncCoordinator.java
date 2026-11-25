@@ -4,6 +4,7 @@ import com.atsukigames.statelink.StateLink;
 import com.atsukigames.statelink.config.Configuration;
 import com.atsukigames.statelink.database.DatabaseManager;
 import com.atsukigames.statelink.database.PlayerDataRepository;
+import com.atsukigames.statelink.database.RecoveryPolicy;
 import com.atsukigames.statelink.database.PlayerDataRepository.AcquireResult;
 import com.atsukigames.statelink.database.PlayerDataRepository.AcquireStatus;
 import com.atsukigames.statelink.database.PlayerDataRepository.CompletePlayerData;
@@ -990,9 +991,20 @@ public final class PlayerSyncCoordinator implements AutoCloseable {
             ServerPlayerEntity player = server.getPlayerManager().getPlayer(context.uuid());
             boolean current = sessions.isCurrent(context, player);
             boolean operatorOnly = result.requiresOperatorReconciliation();
-            if(permitsRiskAcknowledgedAutomaticRecovery() && !operatorOnly && current && !joinTimedOut(context)) {
-                if(attempt==0) player.sendMessage(net.minecraft.text.Text.of("Recovering synchronized player data..."),false);
-                submitAcquire(context,server,attempt+1,config.recovery.retryIntervalSeconds*1000L);
+            if (permitsRiskAcknowledgedAutomaticRecovery() && !operatorOnly && current
+                    && RecoveryPolicy.allowsAutomatic(result.recoveryReason()) && !joinTimedOut(context)) {
+                if (context.extendJoinForRecovery(System.nanoTime(), config.sync.joinSyncTimeoutMs,
+                        config.recovery.maxWaitSeconds)) {
+                    scheduleJoinTimeout(context, server, "JOIN automatic recovery timeout", null,
+                        remainingJoinTimeMs(context));
+                }
+                if (attempt == 0) {
+                    player.sendMessage(net.minecraft.text.Text.of("Recovering synchronized player data..."), false);
+                }
+                long retryDelayMs = TimeUnit.SECONDS.toMillis(config.recovery.retryIntervalSeconds);
+                if (context.state() == SyncState.LOADING && retryDelayMs < remainingJoinTimeMs(context)) {
+                    submitAcquire(context, server, attempt + 1, retryDelayMs);
+                }
                 return;
             }
             context.markDegraded();
@@ -1474,14 +1486,12 @@ public final class PlayerSyncCoordinator implements AutoCloseable {
     }
 
     private boolean joinTimedOut(PlayerSessionContext context) {
-        return System.nanoTime() - context.joinStartedNanos()
-            >= TimeUnit.MILLISECONDS.toNanos(config.sync.joinSyncTimeoutMs);
+        return context.remainingJoinNanos(System.nanoTime(), config.sync.joinSyncTimeoutMs) <= 0;
     }
 
     private long remainingJoinTimeMs(PlayerSessionContext context) {
-        long remainingNanos = TimeUnit.MILLISECONDS.toNanos(config.sync.joinSyncTimeoutMs)
-            - (System.nanoTime() - context.joinStartedNanos());
-        return Math.max(1L, TimeUnit.NANOSECONDS.toMillis(remainingNanos));
+        long nanos = context.remainingJoinNanos(System.nanoTime(), config.sync.joinSyncTimeoutMs);
+        return nanos <= 0 ? 1L : 1L + TimeUnit.NANOSECONDS.toMillis(nanos - 1L);
     }
 
     /**
@@ -1498,7 +1508,12 @@ public final class PlayerSyncCoordinator implements AutoCloseable {
         try {
             ScheduledFuture<?> timeoutTask = scheduler.schedule(() -> {
                 try {
-                    server.execute(() -> failLoadingOnServerThread(context, server, reason, error));
+                    server.execute(() -> {
+                        // Cancellation cannot remove a timeout already dispatched to the server thread.
+                        if (context.state() == SyncState.LOADING && joinTimedOut(context)) {
+                            failLoadingOnServerThread(context, server, reason, error);
+                        }
+                    });
                 } catch (RuntimeException schedulingError) {
                     StateLink.LOGGER.error(
                         "Could not dispatch JOIN timeout to server thread uuid={} session={} reason={}",

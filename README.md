@@ -10,6 +10,10 @@
 
 **2.4.3のログイン修正:** 保存済みプロフィールのUUIDが同じでアカウント名が異なる場合、現在のログインプロフィールを保持し、ほかの同期データを通常どおり読み込みます。UUIDが異なる場合や、プロフィールデータが不正な場合は同期を拒否します。
 
+**2.4.4 recovery login fix:** If an eligible automatic recovery is pending when a player joins, StateLink can wait up to `recovery.maxWaitSeconds` from the start of the login (120 seconds by default, or the normal login timeout if longer). The session stays quarantined until it acquires ownership and loads successfully.
+
+**2.4.4の自動復旧修正:** ログイン時に自動復旧の待機が必要な場合は、ログイン開始から `recovery.maxWaitSeconds`（初期値120秒）まで待ちます。通常のログイン期限のほうが長い場合はそちらを使います。所有権の取得とデータの読み込みが済むまで、プレイヤーは隔離状態です。
+
 **2.4.0 recovery default:** `last_checkpoint`, enabled, with a 5-second delay and `acknowledgeUnsafeRecovery=true`. This automatically adopts the last committed DB checkpoint without a per-player command or freshness requirement. Progress may roll back and externalized World/container items may be duplicated or lost. It is **not safe/exactly-once recovery**. Explicit existing modes and acknowledgement values are preserved, not rewritten. Choose `safe`/`manual` if you do not accept this trade-off. Live-owner, fencing and domain-provenance protections remain; missing player data is not invented.
 
 **2.4.0のrecovery初期値:** `last_checkpoint`・有効・待機5秒・`acknowledgeUnsafeRecovery=true`。プレイヤーごとのコマンドや鮮度条件なしで最後のDB保存を自動採用します。進行の巻戻りや、World/containerとの不一致によるアイテム重複・消失が起こり得るため、安全なexactly-once復旧ではありません。既存configの明示的なmode/承諾値は書き換えません。リスクを避ける場合は`safe`/`manual`を明示してください。live owner・fencing・domain provenanceの保護は維持します。
@@ -44,7 +48,7 @@ Each item can be switched on or off in the config file. Anything you turn off is
 
 ### Installation
 
-1. Download the JAR for your Minecraft version (`StateLink-2.4.2-mc<version>.jar`, for example `-mc1.21.4.jar`), check its SHA-256 against the release manifest, and put it into the `mods` folder of every server.
+1. Download the JAR for your Minecraft version (`StateLink-2.4.4-mc<version>.jar`, for example `-mc1.21.4.jar`), check its SHA-256 against the release manifest, and put it into the `mods` folder of every server.
 2. Start the server once to create `config/statelink.json`. Initialization is intentionally refused until the database fields are configured; this prevents a default writer from starting accidentally.
 3. Stop the server and fill in the database `host`, `name`, `username` and `password`.
 4. Give each server its own `serverId` (for example `s1`, `s2`).
@@ -230,7 +234,7 @@ StateLink は、Minecraft 用(対応バージョンは下記)の **サーバー�
 
 ### 導入方法
 
-1. お使いのMinecraft版のJAR（`StateLink-2.4.2-mc<バージョン>.jar`）を取得し、ReleaseのSHA-256と照合してから、すべてのサーバーの`mods`へ配置します。
+1. お使いのMinecraft版のJAR（`StateLink-2.4.4-mc<バージョン>.jar`）を取得し、ReleaseのSHA-256と照合してから、すべてのサーバーの`mods`へ配置します。
 2. サーバーを一度起動し、`config/statelink.json`を生成します。未設定のwriterが動かないよう、DB情報を入力するまでは意図的に初期化を拒否します。
 3. サーバーを停止し、データベースの `host`・`name`・`username`・`password` を入力します。
 4. サーバーごとに別の `serverId`(例: `s1`、`s2`)を設定します。
