@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.server.level.ServerPlayer;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 1回のJOINからDISCONNECTまでを表すローカルセッション。
@@ -51,6 +52,7 @@ public final class PlayerSessionContext {
     private long latestSnapshotSequence;
     private long dirtySnapshotSequence = -1L;
     private final long joinStartedNanos = System.nanoTime();
+    private volatile long recoveryJoinBudgetNanos;
 
     public PlayerSessionContext(UUID uuid, ServerPlayer player, long generation) {
         this.uuid = uuid;
@@ -73,6 +75,22 @@ public final class PlayerSessionContext {
 
     public long joinStartedNanos() {
         return joinStartedNanos;
+    }
+
+    long remainingJoinNanos(long nowNanos, long normalTimeoutMs) {
+        long budgetNanos = Math.max(TimeUnit.MILLISECONDS.toNanos(normalTimeoutMs), recoveryJoinBudgetNanos);
+        return budgetNanos - (nowNanos - joinStartedNanos);
+    }
+
+    /** A recovery retry shares the original JOIN start. Repeated deferrals cannot slide the deadline. */
+    boolean extendJoinForRecovery(long nowNanos, long normalTimeoutMs, int maxWaitSeconds) {
+        long recoveryBudget = TimeUnit.SECONDS.toNanos(maxWaitSeconds);
+        if (state != SyncState.LOADING || remainingJoinNanos(nowNanos, normalTimeoutMs) <= 0
+                || recoveryBudget <= Math.max(TimeUnit.MILLISECONDS.toNanos(normalTimeoutMs), recoveryJoinBudgetNanos)) {
+            return false;
+        }
+        recoveryJoinBudgetNanos = recoveryBudget;
+        return true;
     }
 
     /** MC thread上でのみ呼び出す。workerはこの参照を通じてMC stateへアクセスしてはいけない。 */
